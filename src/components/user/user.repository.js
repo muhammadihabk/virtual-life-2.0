@@ -17,6 +17,12 @@ const users = [
 		lastName: 'Mostafa',
 		dob: Date.now()
 	},
+	{
+		id: 4,
+		firstName: 'Mo',
+		lastName: 'Adel',
+		dob: Date.now()
+	},
 ];
 
 module.exports = {
