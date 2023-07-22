@@ -5,6 +5,4 @@ const userRouter = Router();
 
 userRouter.get('/', userController.getUsers);
 
-module.exports = {
-	userRouter
-}
+module.exports = { userRouter };
