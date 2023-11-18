@@ -1,20 +1,14 @@
-const fs = require('fs');
-const https = require('https');
-const express = require('express');
-const helmet = require('helmet');
-const { appRouter } = require('./router/app.router');
+const knexClient = require('../config/db/knex-client');
 
-const app = express();
+async function getPosts() {
+  const [answer, answer2] = await knexClient('test_posts');
+  console.log('\n\n########## answer2:\n', answer2, '\n##########\n\n');
+  return answer;
+}
 
-app.use(helmet());
-app.use(express());
-app.use(appRouter);
+async function print() {
+  const result = await getPosts();
+  console.log('\n\n########## res:\n', result, '\n##########\n\n');
+}
 
-const PORT = 3000;
-
-const server = https.createServer({
-	cert: fs.readFileSync('./resources/cert.pem'),
-	key: fs.readFileSync('./resources/key.pem'),
-}, app)
-
-server.listen(PORT, () => console.log(`[VirtuLife] Server started on port ${PORT}`));
+print();
