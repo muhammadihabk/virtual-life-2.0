@@ -28,8 +28,6 @@ module.exports.Post = {
   AUTHOR_ID: 'author_id',
   POST_TEXT: 'post_text',
   POST_IMAGE: 'post_image',
-  REACTIONS_COUNTS: 'reactions_counts',
-  COMMENTS_COUNT: 'comments_count',
   IS_ACTIVE: 'is_active',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
@@ -51,7 +49,7 @@ module.exports.Comment = {
   COMMENT_TEXT: 'comment_text',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
-}
+};
 
 /* _____________________ Columns _____________________ */
 
@@ -66,4 +64,10 @@ module.exports.ReactionReactionKind = {
 module.exports.ReactionActivityKind = {
   POST: 'post',
   COMMENT: 'comment',
+};
+
+/* _____________________ Altered Columns _____________________ */
+module.exports.AlterPost = {
+  REACTIONS_COUNTS: 'reactions_counts',
+  COMMENTS_COUNT: 'comments_count',
 };

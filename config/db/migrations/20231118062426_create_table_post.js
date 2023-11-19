@@ -1,4 +1,4 @@
-const { Table, Post, VirtualLifeUser } = require('../enums');
+const { Table, Post, VirtualLifeUser, AlterPost } = require('../enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -9,8 +9,8 @@ exports.up = function (knex) {
     table.increments(Post.ID);
     table.integer(Post.AUTHOR_ID).unsigned().notNullable(),
       table.string(Post.POST_TEXT, '1000').notNullable();
-    table.text(Post.POST_IMAGE).notNullable();
-    table.json(Post.REACTIONS_COUNTS).notNullable();
+    table.text(AlterPost.POST_IMAGE).notNullable();
+    table.json(AlterPost.REACTIONS_COUNTS).notNullable();
     table.integer(Post.COMMENTS_COUNT).notNullable();
     table.boolean(Post.IS_ACTIVE).notNullable().defaultTo(true);
     table
