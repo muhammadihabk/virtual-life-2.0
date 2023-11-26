@@ -12,8 +12,8 @@ const app = express.Router();
 app.post('/', async function createUser(req, res) {
   try {
     await createUserService(req.body);
-    
-    res.sendStatus(204);
+
+    res.sendStatus(201);
   } catch (error) {
     res.sendStatus(400);
   }
@@ -23,7 +23,7 @@ app.get('/:id', async function getUserById(req, res) {
   try {
     const user = await getUserByIdService(req.params.id);
 
-    res.status(200).json(user);
+    user.length ? res.status(200).json(user) : res.sendStatus(404);
   } catch (error) {
     res.sendStatus(400);
   }
@@ -41,9 +41,9 @@ app.post('/search', async function searchUsers(req, res) {
 
 app.patch('/:id', async function updateUser(req, res) {
   try {
-    await updateUserService(req.params.id, req.body);
+    const countAffectedRows = await updateUserService(req.params.id, req.body);
 
-    res.sendStatus(204);
+    countAffectedRows == 1 ? res.sendStatus(204) : res.sendStatus(404);
   } catch (error) {
     res.sendStatus(400);
   }

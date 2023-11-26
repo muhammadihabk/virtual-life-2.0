@@ -93,11 +93,13 @@ function applyUserFilter(query, payload) {
 
 async function updateUserRepository(userId, userBody) {
   try {
-    await knexClient
+    const countAffectedRows = await knexClient
       .queryBuilder()
       .from(Table.USER)
       .update(userBody)
       .where({ id: userId });
+
+    return countAffectedRows;
   } catch (error) {
     console.log('[User Repository]:', error);
     throw error;

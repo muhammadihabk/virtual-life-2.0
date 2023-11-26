@@ -23,7 +23,7 @@ async function searchUsersService(searchOptions) {
 }
 
 async function updateUserService(userId, userBody) {
-  await updateUserRepository(userId, userBody);
+  return updateUserRepository(userId, userBody);
 }
 
 async function deleteUserService(userId) {
