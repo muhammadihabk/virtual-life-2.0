@@ -1,4 +1,4 @@
-const { Table, Comment, VirtualLifeUser, Post } = require('../enums');
+const { Table, Comment, User, Post } = require('../enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -25,8 +25,8 @@ exports.up = function (knex) {
       .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
     table
       .foreign(Comment.AUTHOR_ID)
-      .references(VirtualLifeUser.ID)
-      .inTable(Table.VIRTUAL_LIFE_USER)
+      .references(User.ID)
+      .inTable(Table.USER)
       .onDelete('CASCADE');
     table
       .foreign(Comment.POST_ID)

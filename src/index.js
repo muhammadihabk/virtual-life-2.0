@@ -1,14 +1,12 @@
-const knexClient = require('../config/db/knex-client');
+const express = require('express');
+const { router } = require('./router');
 
-async function getPosts() {
-  const [answer, answer2] = await knexClient('test_posts');
-  console.log('\n\n########## answer2:\n', answer2, '\n##########\n\n');
-  return answer;
-}
+const app = express();
 
-async function print() {
-  const result = await getPosts();
-  console.log('\n\n########## res:\n', result, '\n##########\n\n');
-}
+app.use(express.json());
+app.use(router);
 
-print();
+const PORT = 3000;
+app.listen(3000, () => {
+  console.log(`[Virtual Life]: Server is up and running on port ${PORT}`);
+});

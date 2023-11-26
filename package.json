@@ -2,15 +2,18 @@
   "name": "virtual-life",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "knex": "npx knex --knexfile config/db/knexFile.js"
+    "knex": "npx knex --knexfile config/db/knexFile.js",
+    "knex:seed": "npm run knex seed:run",
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
     "knex": "^3.0.1",
-    "mysql2": "^3.6.1"
+    "mysql2": "^3.6.4"
   }
 }

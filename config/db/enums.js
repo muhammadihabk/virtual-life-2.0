@@ -1,5 +1,5 @@
 module.exports.Table = {
-  VIRTUAL_LIFE_USER: 'virtual_life_user',
+  USER: 'virtual_life_user',
   FRIEND: 'friend',
   POST: 'post',
   REACTION: 'reaction',
@@ -8,7 +8,7 @@ module.exports.Table = {
 
 /* _____________________ Tables _____________________ */
 
-module.exports.VirtualLifeUser = {
+module.exports.User = {
   ID: 'id',
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
@@ -18,7 +18,7 @@ module.exports.VirtualLifeUser = {
 };
 
 module.exports.Friend = {
-  VIRTUAL_LIFE_USER_ID: 'virtual_life_user_id',
+  USER_ID: 'virtual_life_user_id',
   FRIEND_ID: 'friend_id',
   CREATED_AT: 'created_at',
 };

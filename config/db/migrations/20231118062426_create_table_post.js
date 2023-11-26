@@ -1,4 +1,4 @@
-const { Table, Post, VirtualLifeUser, AlterPost } = require('../enums');
+const { Table, Post, User, AlterPost } = require('../enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -24,8 +24,8 @@ exports.up = function (knex) {
 
     table
       .foreign(Post.AUTHOR_ID)
-      .references(VirtualLifeUser.ID)
-      .inTable(Table.VIRTUAL_LIFE_USER)
+      .references(User.ID)
+      .inTable(Table.USER)
       .onDelete('CASCADE');
   });
 };

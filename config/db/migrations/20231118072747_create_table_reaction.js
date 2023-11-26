@@ -3,7 +3,7 @@ const {
   Reaction,
   ReactionReactionKind,
   ReactionActivityKind,
-  VirtualLifeUser,
+  User,
 } = require('../enums');
 
 /**
@@ -23,8 +23,8 @@ exports.up = function (knex) {
       .notNullable();
     table
       .foreign(Reaction.AUTHOR_ID)
-      .references(VirtualLifeUser.ID)
-      .inTable(Table.VIRTUAL_LIFE_USER)
+      .references(User.ID)
+      .inTable(Table.USER)
       .onDelete('CASCADE');
   });
 };

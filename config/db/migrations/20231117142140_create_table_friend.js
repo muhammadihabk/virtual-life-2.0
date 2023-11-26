@@ -1,4 +1,4 @@
-const { Table, Friend, VirtualLifeUser } = require('../enums');
+const { Table, Friend, User } = require('../enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -6,23 +6,23 @@ const { Table, Friend, VirtualLifeUser } = require('../enums');
  */
 exports.up = async function (knex) {
   return knex.schema.createTable(Table.FRIEND, (table) => {
-    table.integer(Friend.VIRTUAL_LIFE_USER_ID).unsigned().notNullable();
+    table.integer(Friend.USER_ID).unsigned().notNullable();
     table.integer(Friend.FRIEND_ID).unsigned().notNullable();
     table
       .datetime(Friend.CREATED_AT)
       .defaultTo(knex.raw('CURRENT_TIMESTAMP'))
       .notNullable();
 
-    table.primary([Friend.VIRTUAL_LIFE_USER_ID, Friend.FRIEND_ID]);
+    table.primary([Friend.USER_ID, Friend.FRIEND_ID]);
     table
-      .foreign(Friend.VIRTUAL_LIFE_USER_ID)
-      .references(VirtualLifeUser.ID)
-      .inTable(Table.VIRTUAL_LIFE_USER)
+      .foreign(Friend.USER_ID)
+      .references(User.ID)
+      .inTable(Table.USER)
       .onDelete('CASCADE');
     table
       .foreign(Friend.FRIEND_ID)
-      .references(VirtualLifeUser.ID)
-      .inTable(Table.VIRTUAL_LIFE_USER)
+      .references(User.ID)
+      .inTable(Table.USER)
       .onDelete('CASCADE');
   });
 };

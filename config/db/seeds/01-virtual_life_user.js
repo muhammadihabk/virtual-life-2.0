@@ -5,8 +5,8 @@ const { Table } = require('../enums');
  * @returns { Promise<void> }
  */
 exports.seed = async function (knex) {
-  await knex(Table.VIRTUAL_LIFE_USER).delete();
-  await knex(Table.VIRTUAL_LIFE_USER).insert([
+  await knex(Table.USER).delete();
+  await knex(Table.USER).insert([
     {
       id: 1,
       first_name: 'Muhammad',

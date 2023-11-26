@@ -9,51 +9,51 @@ exports.seed = async function (knex) {
   await knex(Table.FRIEND).delete();
   await knex(Table.FRIEND).insert([
     {
-      virtual_life_user_id: 1,
+      USER_id: 1,
       friend_id: 2,
     },
     {
-      virtual_life_user_id: 1,
+      USER_id: 1,
       friend_id: 3,
     },
     {
-      virtual_life_user_id: 1,
+      USER_id: 1,
       friend_id: 4,
     },
     {
-      virtual_life_user_id: 1,
+      USER_id: 1,
       friend_id: 5,
     },
     {
-      virtual_life_user_id: 2,
+      USER_id: 2,
       friend_id: 3,
     },
     {
-      virtual_life_user_id: 2,
+      USER_id: 2,
       friend_id: 5,
     },
     {
-      virtual_life_user_id: 2,
+      USER_id: 2,
       friend_id: 6,
     },
     {
-      virtual_life_user_id: 2,
+      USER_id: 2,
       friend_id: 7,
     },
     {
-      virtual_life_user_id: 4,
+      USER_id: 4,
       friend_id: 6,
     },
     {
-      virtual_life_user_id: 6,
+      USER_id: 6,
       friend_id: 7,
     },
     {
-      virtual_life_user_id: 8,
+      USER_id: 8,
       friend_id: 11,
     },
     {
-      virtual_life_user_id: 9,
+      USER_id: 9,
       friend_id: 11,
     },
   ]);
