@@ -17,9 +17,13 @@ async function createUserRepository(user) {
 
 async function getUserByIdRepository(userId) {
   try {
-    const user = await knexClient.queryBuilder().from(Table.USER).where({
-      id: userId,
-    });
+    const [user] = await knexClient
+      .queryBuilder()
+      .select(UserSearchDefaultSelect)
+      .from(Table.USER)
+      .where({
+        id: userId,
+      });
 
     return user;
   } catch (error) {
@@ -30,12 +34,11 @@ async function getUserByIdRepository(userId) {
 
 async function searchUsersRepository(searchOptions) {
   const select = searchOptions.select || UserSearchDefaultSelect;
-  const filter = searchOptions.filter;
   const limit = searchOptions.paginate?.limit || UserSearchDefaultLimit;
   const offset = searchOptions.paginate?.offset || UserSearchDefaultOffset;
   const sort = searchOptions.sort;
 
-  let query = knexClient.queryBuilder().from(Table.USER).select(select);
+  let query = knexClient.queryBuilder().select(select).from(Table.USER);
 
   query = applyUserFilter(query, searchOptions);
 

@@ -1,0 +1,144 @@
+paths:
+  /user:
+    post:
+      tags: [User]
+      summary: Create a new user
+      description: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUser'
+            example:
+              first_name: Mo
+              last_name: Ihab
+              dob: 2023-12-01
+              email: mo@example.com
+              user_password: pass
+        required: true
+      responses:
+        201:
+          description: User created
+        400:
+          description: Failed to create the user
+  /user/{id}:
+    get:
+      tags: [User]
+      summary: Get a user by id
+      description: Get a user by id
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/User'
+        400:
+          description: 'Failed'
+        404: 
+          description: 'User not found'
+  /user/search: 
+    post:
+      tags: [User]
+      summary: find users
+      description: find users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchUser'
+      responses:
+        200:
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        400:
+          description: 'Failed'
+
+components:
+  schemas:
+    CreateUser:
+      type: object
+      required: [first_name, last_name, dob, email, user_password]
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        dob:
+          type: string
+          format: date
+        email:
+          type: string
+        user_password:
+          type: string
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        dob:
+          type: string
+          format: date
+    Users:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    SearchUser:
+      type: object
+      properties:
+        select:
+          type: array
+          items:
+            $ref: '#/components/x-user-variables/userColumns'
+        filter:
+          type: object
+          properties:
+            ids:
+              type: array
+              items:
+                type: string
+            emails:
+              type: array
+              items:
+                type: string
+        paginate:
+          type: object
+          properties:
+            limit:
+              type: number
+            offset:
+              type: number
+          required: [limit, offset]
+        sort:
+          type: array
+          items:
+            type: object
+            properties:
+              orderBy:
+                type: array
+                items:
+                  $ref: '#/components/x-user-variables/userColumns'
+              sortOrder:
+                type: string
+                enum: [asc, desc]
+            required: [orderBy, sortOrder]
+  parameters:
+    userId:
+      name: id
+      schema:
+          type: string
+      in: path
+      required: true
+  x-user-variables:
+    userColumns:
+      type: string
+      enum: [first_name, last_name, email, dob]
