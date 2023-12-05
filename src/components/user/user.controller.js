@@ -23,7 +23,7 @@ app.get('/:id', async function getUserById(req, res) {
   try {
     const user = await getUserByIdService(req.params.id);
 
-    user.length ? res.status(200).json(user) : res.sendStatus(404);
+    user ? res.status(200).json(user) : res.sendStatus(404);
   } catch (error) {
     res.sendStatus(400);
   }
