@@ -1,11 +1,10 @@
-const { Table } = require('../enums');
+const { Table } = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
 exports.seed = async function (knex) {
-  // Deletes ALL existing entries
   await knex(Table.POST).delete();
   await knex(Table.POST).insert([
     {

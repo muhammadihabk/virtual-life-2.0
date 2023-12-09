@@ -1,4 +1,4 @@
-const { Table, Comment } = require('../enums');
+const { Table, Comment } = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex

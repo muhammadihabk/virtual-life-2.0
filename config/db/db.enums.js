@@ -71,3 +71,9 @@ module.exports.AlterPost = {
   REACTIONS_COUNTS: 'reactions_counts',
   COMMENTS_COUNT: 'comments_count',
 };
+
+/* _____________________ Query Defaults _____________________ */
+module.exports.UserSearchDefaultLimit = 25;
+module.exports.UserSearchDefaultOffset = 0;
+
+module.exports.SortOrder = ['asc', 'desc'];

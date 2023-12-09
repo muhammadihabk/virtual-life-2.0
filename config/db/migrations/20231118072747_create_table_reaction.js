@@ -4,7 +4,7 @@ const {
   ReactionReactionKind,
   ReactionActivityKind,
   User,
-} = require('../enums');
+} = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex

@@ -1,10 +1,11 @@
 const knexClient = require('../../../config/db/knex-client');
-const { Table, User } = require('../../../config/db/enums');
 const {
+  Table,
+  User,
+  UserSearchDefaultSelect,
   UserSearchDefaultLimit,
   UserSearchDefaultOffset,
-} = require('../../../config/db/db.config');
-const { UserSearchDefaultSelect } = require('./enums');
+} = require('../../../config/db/db.enums');
 
 async function createUserRepository(user) {
   try {
