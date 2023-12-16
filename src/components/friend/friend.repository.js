@@ -34,6 +34,11 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
     .select(Friend.FRIEND_ID)
     .from(Table.FRIEND)
     .where(`${Friend.USER_ID}`, userId)
+    .union(function () {
+      this.select(Friend.FRIEND_ID);
+      this.from(Table.FRIEND);
+      this.where(`${Friend.FRIEND_ID}`, userId);
+    })
     .as(`${Table.FRIEND}`);
 
   let query = knexClient
@@ -76,6 +81,11 @@ module.exports.getFriendsSearchPaginateRepository =
       .select(Friend.FRIEND_ID)
       .from(Table.FRIEND)
       .where(`${Friend.USER_ID}`, userId)
+      .union(function () {
+        this.select(Friend.FRIEND_ID);
+        this.from(Table.FRIEND);
+        this.where(`${Friend.FRIEND_ID}`, userId);
+      })
       .as(`${Table.FRIEND}`);
 
     let query = knexClient
@@ -113,3 +123,22 @@ function applyFriendFilter(query, payload) {
 
   return query;
 }
+
+module.exports.removeFriendRepository = async function removeFriendRepository(
+  userId,
+  friendId
+) {
+  try {
+    return await knexClient
+      .queryBuilder()
+      .delete()
+      .from(Table.FRIEND)
+      .where({
+        [Friend.USER_ID]: userId,
+        [Friend.FRIEND_ID]: friendId,
+      });
+  } catch (error) {
+    console.log('[Friend Repository]:', error);
+    throw error;
+  }
+};

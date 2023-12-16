@@ -33,7 +33,7 @@ app.post('/', async function createUser(req, res) {
       errorMessages = error.details.map((element) => element.message);
       res.status(400).json(errorMessages);
     } else {
-      res.sendStatus(400);
+      res.sendStatus(500);
     }
   }
 });
@@ -44,7 +44,8 @@ app.get('/:id', async function getUserById(req, res) {
 
     user ? res.status(200).json(user) : res.sendStatus(404);
   } catch (error) {
-    res.sendStatus(400);
+    console.log('[User Controller]:', error);
+    res.sendStatus(500);
   }
 });
 
@@ -66,7 +67,8 @@ app.post('/search', async function searchUsers(req, res) {
       errorMessages = error.details.map((element) => element.message);
       res.status(400).json(errorMessages);
     } else {
-      res.sendStatus(400);
+      console.log('[User Controller]:', error);
+      res.sendStatus(500);
     }
   }
 });
@@ -89,7 +91,7 @@ app.patch('/:id', async function updateUser(req, res) {
       errorMessages = error.details.map((element) => element.message);
       res.status(400).json(errorMessages);
     } else {
-      res.sendStatus(400);
+      res.sendStatus(500);
     }
   }
 });
@@ -100,7 +102,8 @@ app.delete('/:id', async function deleteUser(req, res) {
 
     countDeletedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
-    res.sendStatus(400);
+    console.log('[User Controller]:', error);
+    res.sendStatus(500);
   }
 });
 

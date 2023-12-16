@@ -2,6 +2,7 @@ const {
   addFriendRepository,
   searchFriendsRepository,
   getFriendsSearchPaginateRepository,
+  removeFriendRepository,
 } = require('./friend.repository');
 
 module.exports.addFriendService = async function addFriendService(addFriend) {
@@ -21,4 +22,8 @@ module.exports.searchFriendService = async function searchFriendService(
     friends: await searchFriendsRepository(userId, addFriend),
     paginate: await getFriendsSearchPaginateRepository(userId, addFriend),
   };
+};
+
+module.exports.removeFriendService = async function removeFriendService(userId, friendId) {
+  return removeFriendRepository(userId, friendId);
 };

@@ -1,6 +1,10 @@
 const express = require('express');
 const { addFriendSchema, searchFriendsSchema } = require('./friend.validation');
-const { addFriendService, searchFriendService } = require('./friend.service');
+const {
+  addFriendService,
+  searchFriendService,
+  removeFriendService,
+} = require('./friend.service');
 const ValidateOptions = require('../../../config/validation/validation.config');
 
 const app = express();
@@ -23,14 +27,13 @@ app.post('/add', async function addFriend(req, res) {
       const errorMessages = error.details.map((element) => element.message);
       res.status(400).json(errorMessages);
     } else {
-      res.sendStatus(400);
+      res.sendStatus(500);
     }
   }
 });
 
 app.post('/search/:userId', async function searchFriends(req, res) {
   try {
-    const userId = req.params.userId;
     const { value: searchFriends, error } = searchFriendsSchema.validate(
       req.body,
       ValidateOptions
@@ -39,7 +42,7 @@ app.post('/search/:userId', async function searchFriends(req, res) {
       throw error;
     }
 
-    const friends = await searchFriendService(userId, searchFriends);
+    const friends = await searchFriendService(req.params.userId, searchFriends);
     res.status(200).json(friends);
   } catch (error) {
     console.log('[Friend Controller]:', error);
@@ -47,8 +50,27 @@ app.post('/search/:userId', async function searchFriends(req, res) {
       const errorMessages = error.details.map((element) => element.message);
       res.status(400).json(errorMessages);
     } else {
-      res.sendStatus(400);
+      res.sendStatus(500);
     }
+  }
+});
+
+app.delete('/:userId/:friendId', async function removeFriend(req, res) {
+  let userId =
+    req.params.userId < req.params.friendId
+      ? req.params.userId
+      : req.params.friendId;
+  let friendId =
+    req.params.userId > req.params.friendId
+      ? req.params.userId
+      : req.params.friendId;
+  try {
+    const affectedRows = await removeFriendService(userId, friendId);
+
+    affectedRows === 1 ? res.sendStatus(200) : res.sendStatus(404);
+  } catch (error) {
+    console.log('[Friend Controller]:', error);
+    res.sendStatus(500);
   }
 });
 
