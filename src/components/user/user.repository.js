@@ -3,20 +3,24 @@ const {
   Table,
   User,
   UserSearchDefaultSelect,
-  UserSearchDefaultLimit,
-  UserSearchDefaultOffset,
+  SearchDefaultLimit,
+  SearchDefaultOffset,
 } = require('../../../config/db/db.enums');
 
-async function createUserRepository(user) {
+module.exports.createUserRepository = async function createUserRepository(
+  user
+) {
   try {
     await knexClient.queryBuilder().from(Table.USER).insert(user);
   } catch (error) {
     console.log('[User Repository]:', error);
     throw error;
   }
-}
+};
 
-async function getUserByIdRepository(userId) {
+module.exports.getUserByIdRepository = async function getUserByIdRepository(
+  userId
+) {
   try {
     const [user] = await knexClient
       .queryBuilder()
@@ -31,12 +35,14 @@ async function getUserByIdRepository(userId) {
     console.log('[User Repository]:', error);
     throw error;
   }
-}
+};
 
-async function searchUsersRepository(searchOptions) {
+module.exports.searchUsersRepository = async function searchUsersRepository(
+  searchOptions
+) {
   const select = searchOptions.select || UserSearchDefaultSelect;
-  const limit = searchOptions.paginate?.limit || UserSearchDefaultLimit;
-  const offset = searchOptions.paginate?.offset || UserSearchDefaultOffset;
+  const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
+  const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
   const sort = searchOptions.sort;
 
   let query = knexClient.queryBuilder().select(select).from(Table.USER);
@@ -58,28 +64,28 @@ async function searchUsersRepository(searchOptions) {
       console.log('[User Repository]:', error);
       throw error;
     });
-}
+};
 
-async function getSearchPaginateRepository(searchOptions) {
-  const searchResult = {};
-  searchResult.limit = searchOptions.paginate?.limit || UserSearchDefaultLimit;
-  searchResult.offset =
-    searchOptions.paginate?.offset || UserSearchDefaultOffset;
+module.exports.getUsersSearchPaginateRepository =
+  async function getUsersSearchPaginateRepository(searchOptions) {
+    const searchResult = {};
+    searchResult.limit = searchOptions.paginate?.limit || SearchDefaultLimit;
+    searchResult.offset = searchOptions.paginate?.offset || SearchDefaultOffset;
 
-  let query = knexClient.queryBuilder().from(Table.USER);
+    let query = knexClient.queryBuilder().from(Table.USER);
 
-  query = applyUserFilter(query, searchOptions);
+    query = applyUserFilter(query, searchOptions);
 
-  try {
-    const [{ count }] = await query.count(`${User.ID} AS count`);
-    searchResult.count = count;
+    try {
+      const [{ count }] = await query.count(`${User.ID} AS count`);
+      searchResult.count = count;
 
-    return searchResult;
-  } catch (error) {
-    console.log('[User Repository]:', error);
-    throw error;
-  }
-}
+      return searchResult;
+    } catch (error) {
+      console.log('[User Repository]:', error);
+      throw error;
+    }
+  };
 
 function applyUserFilter(query, payload) {
   const filter = payload.filter;
@@ -95,7 +101,10 @@ function applyUserFilter(query, payload) {
   return query;
 }
 
-async function updateUserRepository(userId, userBody) {
+module.exports.updateUserRepository = async function updateUserRepository(
+  userId,
+  userBody
+) {
   try {
     const countAffectedRows = await knexClient
       .queryBuilder()
@@ -108,9 +117,11 @@ async function updateUserRepository(userId, userBody) {
     console.log('[User Repository]:', error);
     throw error;
   }
-}
+};
 
-async function deleteUserRepository(userId) {
+module.exports.deleteUserRepository = async function deleteUserRepository(
+  userId
+) {
   try {
     const countDeletedRows = await knexClient
       .queryBuilder()
@@ -123,13 +134,4 @@ async function deleteUserRepository(userId) {
     console.log('[User Repository]:', error);
     throw error;
   }
-}
-
-module.exports = {
-  createUserRepository,
-  getUserByIdRepository,
-  searchUsersRepository,
-  getSearchPaginateRepository,
-  updateUserRepository,
-  deleteUserRepository,
 };

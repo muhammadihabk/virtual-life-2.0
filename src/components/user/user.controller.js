@@ -11,14 +11,16 @@ const {
   searchUsersSchema,
   updateUserSchema,
 } = require('./user.validation');
+const ValidateOptions = require('../../../config/validation/validation.config');
 
 const app = express();
 
 app.post('/', async function createUser(req, res) {
   try {
-    const { value: user, error } = createUserSchema.validate(req.body, {
-      abortEarly: false,
-    });
+    const { value: user, error } = createUserSchema.validate(
+      req.body,
+      ValidateOptions
+    );
     if (error) {
       throw error;
     }
@@ -50,9 +52,7 @@ app.post('/search', async function searchUsers(req, res) {
   try {
     const { value: searchOptions, error } = searchUsersSchema.validate(
       req.body,
-      {
-        abortEarly: false,
-      }
+      ValidateOptions
     );
     if (error) {
       throw error;
@@ -73,9 +73,10 @@ app.post('/search', async function searchUsers(req, res) {
 
 app.patch('/:id', async function updateUser(req, res) {
   try {
-    const { value: user, error } = updateUserSchema.validate(req.body, {
-      abortEarly: false,
-    });
+    const { value: user, error } = updateUserSchema.validate(
+      req.body,
+      ValidateOptions
+    );
     if (error) {
       throw error;
     }

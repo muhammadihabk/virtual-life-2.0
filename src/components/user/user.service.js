@@ -2,38 +2,37 @@ const {
   searchUsersRepository,
   createUserRepository,
   getUserByIdRepository,
-  getSearchPaginateRepository,
+  getUsersSearchPaginateRepository,
   updateUserRepository,
   deleteUserRepository,
 } = require('./user.repository');
 
-function createUserService(createUserBody) {
-  return createUserRepository(createUserBody);
-}
+module.exports.createUserService = async function createUserService(
+  createUserBody
+) {
+  await createUserRepository(createUserBody);
+};
 
-function getUserByIdService(userId) {
+module.exports.getUserByIdService = function getUserByIdService(userId) {
   return getUserByIdRepository(userId);
-}
+};
 
-async function searchUsersService(searchOptions) {
+module.exports.searchUsersService = async function searchUsersService(
+  searchOptions
+) {
   return {
     users: await searchUsersRepository(searchOptions),
-    paginate: await getSearchPaginateRepository(searchOptions),
+    paginate: await getUsersSearchPaginateRepository(searchOptions),
   };
-}
+};
 
-async function updateUserService(userId, userBody) {
+module.exports.updateUserService = function updateUserService(
+  userId,
+  userBody
+) {
   return updateUserRepository(userId, userBody);
-}
+};
 
-async function deleteUserService(userId) {
-  return await deleteUserRepository(userId);
-}
-
-module.exports = {
-  createUserService,
-  getUserByIdService,
-  searchUsersService,
-  updateUserService,
-  deleteUserService,
+module.exports.deleteUserService = function deleteUserService(userId) {
+  return deleteUserRepository(userId);
 };

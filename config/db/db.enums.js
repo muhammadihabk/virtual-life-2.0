@@ -73,7 +73,7 @@ module.exports.AlterPost = {
 };
 
 /* _____________________ Query Defaults _____________________ */
-module.exports.UserSearchDefaultLimit = 25;
-module.exports.UserSearchDefaultOffset = 0;
+module.exports.SearchDefaultLimit = 25;
+module.exports.SearchDefaultOffset = 0;
 
 module.exports.SortOrder = ['asc', 'desc'];

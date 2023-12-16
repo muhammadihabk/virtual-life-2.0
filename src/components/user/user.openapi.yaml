@@ -1,5 +1,5 @@
 paths:
-  /user:
+  /users:
     post:
       tags: [User]
       summary: Create a new user
@@ -21,7 +21,7 @@ paths:
           description: Success
         400:
           description: Failed
-  /user/{id}:
+  /users/{id}:
     get:
       tags: [User]
       summary: Get a user by id
@@ -39,7 +39,7 @@ paths:
           description: Failed
         404: 
           description: User not found
-  /user/search:
+  /users/search:
     post:
       tags: [User]
       summary: find users

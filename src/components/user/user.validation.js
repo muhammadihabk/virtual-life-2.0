@@ -22,7 +22,7 @@ const searchUsersSchema = joi.object({
   }),
   sort: joi.array().items(
     joi.object({
-      orderBy: joi.array().items().required(),
+      orderBy: joi.string().valid(...UserSearchAllowedSelect).required(),
       sortOrder: joi.string().valid(...SortOrder),
     })
   ),

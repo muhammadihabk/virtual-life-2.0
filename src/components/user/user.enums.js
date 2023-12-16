@@ -1,20 +1,15 @@
 const { User } = require('../../../config/db/db.enums');
 
-const UserSearchDefaultSelect = [
+module.exports.UserSearchDefaultSelect = [
   User.FIRST_NAME,
   User.LAST_NAME,
   User.DOB,
   User.EMAIL,
 ];
 
-const UserSearchAllowedSelect = [
+module.exports.UserSearchAllowedSelect = [
   User.FIRST_NAME,
   User.LAST_NAME,
   User.DOB,
   User.EMAIL,
 ];
-
-module.exports = {
-  UserSearchDefaultSelect,
-  UserSearchAllowedSelect,
-};
