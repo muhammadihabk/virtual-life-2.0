@@ -1,0 +1,112 @@
+paths:
+  /friends/add:
+    post:
+      tags: [Friend]
+      summary: Add a friend to a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddFriend'
+            example:
+              virtual_life_user_id: 58
+              friend_id: 57
+        required: true
+      responses:
+        201:
+          description: Success
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /friends/search/{userId}:
+    post:
+      tags: [Friend]
+      summary: Find friends
+      description: Find friends
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchFriends'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Users'
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /friends/{userId}/{friendId}:
+   delete:
+      tags: [Friend]
+      summary: Remove a friend
+      description: Remove a friend
+      parameters:
+        - $ref: '#/components/parameters/friendSearchUserId'
+        - $ref: '#/components/parameters/friendSearchFriendId'
+      responses:
+        200:
+          description: Success
+        404:
+          description: User not found
+        500:
+          description: Failed
+
+components:
+  schemas:
+    AddFriend:
+      type: object
+      properties:
+        virtual_life_user_id:
+          type: number
+        friend_id:
+          type: number
+      required: [virtual_life_user_id, friend_id]
+    SearchFriends:
+      type: object
+      properties:
+        select:
+          type: array
+          items:
+            $ref: '#/components/x-user-variables/userColumns'
+        filter:
+          type: object
+          properties:
+            friendsIds:
+              type: array
+              items:
+                type: number
+            friendsEmails:
+              type: array
+              items:
+                type: string
+        paginate:
+          $ref: '#/components/x-global-variables/searchPaginate'
+        sort:
+          type: array
+          items:
+            type: object
+            properties:
+              orderBy:
+                $ref: '#/components/x-user-variables/userColumns'
+              sortOrder:
+                $ref: '#/components/x-global-variables/searchSortOrder'
+  parameters:
+    friendSearchUserId:
+      name: userId
+      schema:
+          type: string
+      in: path
+      required: true
+    friendSearchFriendId:
+      name: friendId
+      schema:
+          type: string
+      in: path
+      required: true

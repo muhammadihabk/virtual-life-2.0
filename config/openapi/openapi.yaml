@@ -6,3 +6,18 @@ info:
 
 servers:
   - url: http://localhost:3000
+
+components:
+  x-global-variables:
+    searchPaginate:
+      type: object
+      properties:
+        limit:
+          type: number
+        offset:
+          type: number
+      required: [limit, offset]
+    searchSortOrder:
+      type: string
+      enum: [asc, desc]
+      required: [orderBy, sortOrder]

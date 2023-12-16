@@ -21,6 +21,8 @@ paths:
           description: Success
         400:
           description: Failed
+        500:
+          description: Failed
   /users/{id}:
     get:
       tags: [User]
@@ -35,35 +37,73 @@ paths:
             application/schema:
               schema:
                 $ref: '#/components/schemas/User'
-        400:
-          description: Failed
-        404: 
+        404:
           description: User not found
-  /users/search:
-    post:
+        500:
+          description: Failed
+    patch:
       tags: [User]
-      summary: find users
-      description: find users
+      summary: Update a user
+      description: Update a user
+      parameters:
+        - $ref: '#/components/parameters/userId'
       requestBody:
         content:
-          application/json:
+          applicant/json:
             schema:
-              $ref: '#/components/schemas/SearchUser'
+              $ref: '#/components/schemas/User'
       responses:
         200:
           description: Success
           content:
-            application/json:
+            application/schema:
               schema:
-                $ref: '#/components/schemas/Users'
+                $ref: '#/components/schemas/User'
         400:
+          description: Failed
+        404:
+          description: User not found
+        500:
+          description: Failed
+    delete:
+      tags: [User]
+      summary: Delete a user
+      description: Delete a user
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User not found
+        500:
+          description: Failed
+  /users/search:
+    post:
+      tags: [User]
+      summary: Find users
+      description: Find users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchUsers'
+      responses:
+        200:
+          description: Success
+        400:
+          description: Failed
+        500:
           description: Failed
 
 components:
   schemas:
     CreateUser:
       type: object
-      required: [first_name, last_name, dob, email, user_password]
       properties:
         first_name:
           type: string
@@ -76,6 +116,7 @@ components:
           type: string
         user_password:
           type: string
+      required: [first_name, last_name, dob, email, user_password]
     User:
       type: object
       properties:
@@ -92,7 +133,7 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/User'
-    SearchUser:
+    SearchUsers:
       type: object
       properties:
         select:
@@ -105,32 +146,37 @@ components:
             ids:
               type: array
               items:
-                type: string
+                type: number
             emails:
               type: array
               items:
                 type: string
         paginate:
-          type: object
-          properties:
-            limit:
-              type: number
-            offset:
-              type: number
-          required: [limit, offset]
+          $ref: '#/components/x-global-variables/searchPaginate'
         sort:
           type: array
           items:
             type: object
             properties:
               orderBy:
-                type: array
-                items:
-                  $ref: '#/components/x-user-variables/userColumns'
+                $ref: '#/components/x-user-variables/userColumns'
               sortOrder:
-                type: string
-                enum: [asc, desc]
-            required: [orderBy, sortOrder]
+                $ref: '#/components/x-global-variables/searchSortOrder'
+    UpdateUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        dob:
+          type: string
+          format: date
+        email:
+          type: string
+        user_password:
+          type: string
+      required: [first_name, last_name, dob, email, user_password]
   parameters:
     userId:
       name: id
