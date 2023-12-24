@@ -2,7 +2,7 @@ const express = require('express');
 const { addFriendSchema, searchFriendsSchema } = require('./friend.validation');
 const {
   addFriendService,
-  searchFriendService,
+  searchFriendsService,
   removeFriendService,
 } = require('./friend.service');
 const ValidateOptions = require('../../../config/validation/validation.config');
@@ -32,7 +32,7 @@ app.post('/add', async function addFriend(req, res) {
   }
 });
 
-app.post('/search/:userId', async function searchFriends(req, res) {
+app.post('/search', async function searchFriends(req, res) {
   try {
     const { value: searchFriends, error } = searchFriendsSchema.validate(
       req.body,
@@ -42,7 +42,7 @@ app.post('/search/:userId', async function searchFriends(req, res) {
       throw error;
     }
 
-    const friends = await searchFriendService(req.params.userId, searchFriends);
+    const friends = await searchFriendsService(searchFriends);
     res.status(200).json(friends);
   } catch (error) {
     console.log('[Friend Controller]:', error);

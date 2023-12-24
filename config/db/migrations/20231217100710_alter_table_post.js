@@ -1,4 +1,4 @@
-const { Table, AlterPost } = require('../db.enums');
+const { Table, Post, AlterPost } = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -6,8 +6,7 @@ const { Table, AlterPost } = require('../db.enums');
  */
 exports.up = function (knex) {
   return knex.schema.table(Table.POST, (table) => {
-    table.dropColumn(AlterPost.REACTIONS_COUNTS);
-    table.dropColumn(AlterPost.COMMENTS_COUNT);
+    table.dropColumn(AlterPost.IS_ACTIVE);
   });
 };
 
@@ -17,7 +16,6 @@ exports.up = function (knex) {
  */
 exports.down = function (knex) {
   return knex.schema.table(Table.POST, (table) => {
-    table.json(AlterPost.REACTIONS_COUNTS).notNullable();
-    table.integer(AlterPost.COMMENTS_COUNT).notNullable();
+    table.boolean(AlterPost.IS_ACTIVE).notNullable().defaultTo(true);
   });
 };

@@ -16,7 +16,7 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.alterTable(Table.USER, (table) => {
+  return knex.schema.table(Table.USER, (table) => {
     table.dropColumn(User.EMAIL);
     table.dropColumn(User.PASSWORD);
   });

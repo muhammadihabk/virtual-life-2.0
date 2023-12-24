@@ -14,16 +14,18 @@ module.exports.addFriendService = async function addFriendService(addFriend) {
   await addFriendRepository(addFriend);
 };
 
-module.exports.searchFriendService = async function searchFriendService(
-  userId,
+module.exports.searchFriendsService = async function searchFriendsService(
   addFriend
 ) {
   return {
-    friends: await searchFriendsRepository(userId, addFriend),
-    paginate: await getFriendsSearchPaginateRepository(userId, addFriend),
+    friends: await searchFriendsRepository(addFriend),
+    paginate: await getFriendsSearchPaginateRepository(addFriend),
   };
 };
 
-module.exports.removeFriendService = async function removeFriendService(userId, friendId) {
+module.exports.removeFriendService = function removeFriendService(
+  userId,
+  friendId
+) {
   return removeFriendRepository(userId, friendId);
 };

@@ -12,7 +12,7 @@ module.exports.addFriendRepository = async function addFriendRepository(
   addFriend
 ) {
   try {
-    await knexClient.from(Table.FRIEND).insert(addFriend);
+    await knexClient.insert(addFriend).into(Table.FRIEND);
   } catch (error) {
     console.log('[Friend Repository]:', error);
     throw error;
@@ -20,7 +20,6 @@ module.exports.addFriendRepository = async function addFriendRepository(
 };
 
 module.exports.searchFriendsRepository = async function searchFriendsRepository(
-  userId,
   searchOptions
 ) {
   let select = searchOptions.select || UserSearchDefaultSelect;
@@ -28,6 +27,7 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
   const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
   const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
   const sort = searchOptions.sort;
+  const userId = searchOptions.filter?.userId;
 
   const allFriendsSubQuery = knexClient
     .queryBuilder()
@@ -71,10 +71,10 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
 };
 
 module.exports.getFriendsSearchPaginateRepository =
-  async function getFriendsSearchPaginateRepository(userId, searchOptions) {
-    const searchResult = {};
-    searchResult.limit = searchOptions.paginate?.limit || SearchDefaultLimit;
-    searchResult.offset = searchOptions.paginate?.offset || SearchDefaultOffset;
+  async function getFriendsSearchPaginateRepository(searchOptions) {
+    const userId = searchOptions.filter?.userId;
+    const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
+    const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
 
     const allFriendsSubQuery = knexClient
       .queryBuilder()
@@ -101,9 +101,12 @@ module.exports.getFriendsSearchPaginateRepository =
 
     try {
       const [{ count }] = await query.count(`${User.ID} AS count`);
-      searchResult.count = count;
-
-      return searchResult;
+      
+      return {
+        count,
+        limit,
+        offset,
+      }
     } catch (error) {
       console.log('[Friend Repository]:', error);
       throw error;

@@ -7,12 +7,12 @@ const { Table, Post, User, AlterPost } = require('../db.enums');
 exports.up = function (knex) {
   return knex.schema.createTable(Table.POST, (table) => {
     table.increments(Post.ID);
-    table.integer(Post.AUTHOR_ID).unsigned().notNullable(),
-      table.string(Post.POST_TEXT, '1000').notNullable();
-    table.text(AlterPost.POST_IMAGE).notNullable();
+    table.integer(Post.AUTHOR_ID).unsigned().notNullable();
+    table.string(Post.POST_TEXT, '1000').notNullable();
+    table.text(Post.POST_IMAGE).notNullable();
     table.json(AlterPost.REACTIONS_COUNTS).notNullable();
-    table.integer(Post.COMMENTS_COUNT).notNullable();
-    table.boolean(Post.IS_ACTIVE).notNullable().defaultTo(true);
+    table.integer(AlterPost.COMMENTS_COUNT).notNullable();
+    table.boolean(AlterPost.IS_ACTIVE).notNullable().defaultTo(true);
     table
       .datetime(Post.CREATED_AT)
       .notNullable()

@@ -42,7 +42,7 @@ app.get('/:id', async function getUserById(req, res) {
   try {
     const user = await getUserByIdService(req.params.id);
 
-    user ? res.status(200).json(user) : res.sendStatus(404);
+    user ? res.json(user) : res.sendStatus(404);
   } catch (error) {
     console.log('[User Controller]:', error);
     res.sendStatus(500);

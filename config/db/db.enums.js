@@ -28,7 +28,6 @@ module.exports.Post = {
   AUTHOR_ID: 'author_id',
   POST_TEXT: 'post_text',
   POST_IMAGE: 'post_image',
-  IS_ACTIVE: 'is_active',
   CREATED_AT: 'created_at',
   UPDATED_AT: 'updated_at',
 };
@@ -70,6 +69,7 @@ module.exports.ReactionActivityKind = {
 module.exports.AlterPost = {
   REACTIONS_COUNTS: 'reactions_counts',
   COMMENTS_COUNT: 'comments_count',
+  IS_ACTIVE: 'is_active',
 };
 
 /* _____________________ Query Defaults _____________________ */

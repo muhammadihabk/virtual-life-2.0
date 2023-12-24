@@ -4,12 +4,18 @@ const { Table, Comment } = require('../db.enums');
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function (knex) {
-  return knex.schema.table(Table.COMMENT, async (table) => {
-    await table.dropForeign(Comment.PARENT_COMMENT_ID);
-    await table.dropColumn(Comment.PARENT_COMMENT_ID);
-    await table.integer(Comment.PARENT_COMMENT_ID).unsigned();
-    await table
+exports.up = async function (knex) {
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table.dropForeign(Comment.PARENT_COMMENT_ID);
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table.dropColumn(Comment.PARENT_COMMENT_ID);
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table.integer(Comment.PARENT_COMMENT_ID).unsigned();
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table
       .foreign(Comment.PARENT_COMMENT_ID)
       .references(Comment.ID)
       .inTable(Table.COMMENT)
@@ -21,15 +27,22 @@ exports.up = function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-  return knex.schema.table(Table.COMMENT, async (table) => {
-    await table.dropColumn(Comment.PARENT_COMMENT_ID);
-    await table
+exports.down = async function (knex) {
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table.dropForeign(Comment.PARENT_COMMENT_ID);
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table.dropColumn(Comment.PARENT_COMMENT_ID);
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table
       .integer(Comment.PARENT_COMMENT_ID)
       .unsigned()
       .notNullable()
       .defaultTo(0);
-    await table
+  });
+  await knex.schema.table(Table.COMMENT, (table) => {
+    table
       .foreign(Comment.PARENT_COMMENT_ID)
       .references(Comment.ID)
       .inTable(Table.COMMENT)

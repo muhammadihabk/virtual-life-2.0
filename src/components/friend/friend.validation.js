@@ -10,6 +10,7 @@ module.exports.addFriendSchema = joi.object({
 module.exports.searchFriendsSchema = joi.object({
   select: joi.array().items(joi.string().valid(...UserSearchAllowedSelect)),
   filter: joi.object({
+    userId: joi.number(),
     friendsIds: joi.array().items(joi.number()),
     friendsEmails: joi.array().items(joi.string().email()),
   }),

@@ -2,16 +2,16 @@ const knexClient = require('../../../config/db/knex-client');
 const {
   Table,
   User,
-  UserSearchDefaultSelect,
   SearchDefaultLimit,
   SearchDefaultOffset,
 } = require('../../../config/db/db.enums');
+const { UserSearchDefaultSelect } = require('./user.enums');
 
 module.exports.createUserRepository = async function createUserRepository(
   user
 ) {
   try {
-    await knexClient.queryBuilder().from(Table.USER).insert(user);
+    await knexClient.queryBuilder().insert(user).into(Table.USER);
   } catch (error) {
     console.log('[User Repository]:', error);
     throw error;
@@ -68,9 +68,8 @@ module.exports.searchUsersRepository = async function searchUsersRepository(
 
 module.exports.getUsersSearchPaginateRepository =
   async function getUsersSearchPaginateRepository(searchOptions) {
-    const searchResult = {};
-    searchResult.limit = searchOptions.paginate?.limit || SearchDefaultLimit;
-    searchResult.offset = searchOptions.paginate?.offset || SearchDefaultOffset;
+    const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
+    const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
 
     let query = knexClient.queryBuilder().from(Table.USER);
 
@@ -78,9 +77,12 @@ module.exports.getUsersSearchPaginateRepository =
 
     try {
       const [{ count }] = await query.count(`${User.ID} AS count`);
-      searchResult.count = count;
 
-      return searchResult;
+      return {
+        count,
+        limit,
+        offset,
+      };
     } catch (error) {
       console.log('[User Repository]:', error);
       throw error;
