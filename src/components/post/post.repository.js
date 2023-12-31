@@ -16,7 +16,7 @@ module.exports.createPostRepository = async function createPostRepository(
   try {
     // TODO: Remove this line when authentication is implemented
     postDetails[Post.AUTHOR_ID] = 1;
-    
+
     await knexClient.queryBuilder().insert(postDetails).into(Table.POST);
   } catch (error) {
     console.log('[Post Repository]:', error);
@@ -51,7 +51,31 @@ module.exports.searchPostsRepository = async function searchPostsRepository(
   const offset = searchPosts.paginate?.offset || SearchDefaultOffset;
   const sort = searchPosts.sort;
 
-  let query = knexClient.queryBuilder().select(select).from(Table.POST);
+  const commentsCountQuery = getCommentsCountQuery();
+
+  const reactionsCountQuery = getReactionsCountQuery();
+
+  let query = knexClient
+    .queryBuilder()
+    .select(
+      select
+        .map((element) => `${Table.POST}.${element}`)
+        .concat([
+          'comments_counts.count_comments',
+          'reactions_counts.count_reactions',
+        ])
+    )
+    .from(Table.POST)
+    .leftJoin(
+      commentsCountQuery,
+      `${Table.POST}.${Post.ID}`,
+      'comments_counts.post_id'
+    )
+    .leftJoin(
+      reactionsCountQuery,
+      `${Table.POST}.${Post.ID}`,
+      'reactions_counts.post_id'
+    );
 
   query = applyPostFilter(query, searchPosts);
 
@@ -134,44 +158,9 @@ module.exports.getHomeFeedRepository = async function getHomeFeedRepository(
       .from(allFriendsSubQuery)
       .where(`${Table.FRIEND}.${Friend.USER_ID}`, userId);
 
-    const commentsCountQuery = knexClient
-      .queryBuilder()
-      .select([
-        `${Table.POST}.${Post.ID} AS post_id`,
-        `${Table.POST}.${Post.AUTHOR_ID} AS author_id`,
-        `${Table.POST}.${Post.POST_TEXT}`,
-        `${Table.POST}.${Post.POST_IMAGE}`,
-        `${Table.POST}.${Post.CREATED_AT}`,
-        `${Table.POST}.${Post.UPDATED_AT}`,
-        knexClient.raw(
-          `COUNT(${Table.COMMENT}.${Comment.ID}) AS count_comments`
-        ),
-      ])
-      .from(Table.POST)
-      .leftJoin(
-        Table.COMMENT,
-        `${Table.COMMENT}.${Comment.POST_ID}`,
-        `${Table.POST}.${Post.ID}`
-      )
-      .groupBy(`${Table.POST}.${Post.ID}`)
-      .as('comments_counts');
+    const commentsCountQuery = getCommentsCountQuery();
 
-    const reactionsCountQuery = knexClient
-      .queryBuilder()
-      .select([
-        `${Table.POST}.${Post.ID} AS post_id`,
-        knexClient.raw(
-          `COUNT(${Table.REACTION}.${Reaction.ID}) AS count_reactions`
-        ),
-      ])
-      .from(Table.POST)
-      .leftJoin(
-        knexClient.raw(
-          `${Table.REACTION} ON ${Table.REACTION}.${Reaction.ACTIVITY_ID} = ${Table.POST}.${Post.ID} AND ${Table.REACTION}.${Reaction.ACTIVITY_KIND} = 'post'`
-        )
-      )
-      .groupBy(`${Table.POST}.${Post.ID}`)
-      .as('reactions_counts');
+    const reactionsCountQuery = getReactionsCountQuery();
 
     const reactionsDiversityFactorQuery = knexClient
       .queryBuilder()
@@ -198,6 +187,8 @@ module.exports.getHomeFeedRepository = async function getHomeFeedRepository(
         `comments_counts.${Post.POST_IMAGE}`,
         `comments_counts.${Post.CREATED_AT}`,
         `comments_counts.${Post.UPDATED_AT}`,
+        'comments_counts.count_comments',
+        'reactions_counts.count_reactions',
       ])
       .from(commentsCountQuery)
       .leftJoin(
@@ -258,4 +249,45 @@ module.exports.deletePostRepository = async function deletePostRepository(
     console.log('[Post Repository]:', error);
     throw error;
   }
+};
+
+function getCommentsCountQuery() {
+  return knexClient
+    .queryBuilder()
+    .select([
+      `${Table.POST}.${Post.ID} AS post_id`,
+      `${Table.POST}.${Post.AUTHOR_ID} AS author_id`,
+      `${Table.POST}.${Post.POST_TEXT}`,
+      `${Table.POST}.${Post.POST_IMAGE}`,
+      `${Table.POST}.${Post.CREATED_AT}`,
+      `${Table.POST}.${Post.UPDATED_AT}`,
+      knexClient.raw(`COUNT(${Table.COMMENT}.${Comment.ID}) AS count_comments`),
+    ])
+    .from(Table.POST)
+    .leftJoin(
+      Table.COMMENT,
+      `${Table.COMMENT}.${Comment.POST_ID}`,
+      `${Table.POST}.${Post.ID}`
+    )
+    .groupBy(`${Table.POST}.${Post.ID}`)
+    .as('comments_counts');
+}
+
+function getReactionsCountQuery() {
+  return knexClient
+    .queryBuilder()
+    .select([
+      `${Table.POST}.${Post.ID} AS post_id`,
+      knexClient.raw(
+        `COUNT(${Table.REACTION}.${Reaction.ID}) AS count_reactions`
+      ),
+    ])
+    .from(Table.POST)
+    .leftJoin(
+      knexClient.raw(
+        `${Table.REACTION} ON ${Table.REACTION}.${Reaction.ACTIVITY_ID} = ${Table.POST}.${Post.ID} AND ${Table.REACTION}.${Reaction.ACTIVITY_KIND} = 'post'`
+      )
+    )
+    .groupBy(`${Table.POST}.${Post.ID}`)
+    .as('reactions_counts');
 }
