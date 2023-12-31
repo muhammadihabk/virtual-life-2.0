@@ -36,6 +36,19 @@ Object.assign(components.schemas, friendSchemas);
 Object.assign(components.parameters, friendParameters);
 Object.assign(components, friendVariables);
 
+// Add src/post doc
+const postOpenapiDoc = fs.readFileSync(
+  'src/components/post/post.openapi.yaml',
+  'utf8'
+);
+const postSwaggerDocument = yaml.parse(postOpenapiDoc);
+const { paths: postPaths } = postSwaggerDocument;
+const { schemas: postSchemas, parameters: postParameters, ...postVariables } = postSwaggerDocument.components;
+Object.assign(paths, postPaths);
+Object.assign(components.schemas, postSchemas);
+Object.assign(components.parameters, postParameters);
+Object.assign(components, postVariables);
+
 mainSwaggerDocument.paths = paths;
 mainSwaggerDocument.components = components;
 

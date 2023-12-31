@@ -19,13 +19,13 @@ paths:
           description: Failed
         500:
           description: Failed
-  /friends/search/{userId}:
+  /friends/{userId}/search/:
     post:
       tags: [Friend]
       summary: Find friends
       description: Find friends
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/friendSearchUserId'
       requestBody:
         content:
           application/json:
@@ -48,8 +48,8 @@ paths:
       summary: Remove a friend
       description: Remove a friend
       parameters:
-        - $ref: '#/components/parameters/friendSearchUserId'
-        - $ref: '#/components/parameters/friendSearchFriendId'
+        - $ref: '#/components/parameters/friendRemoveUserId'
+        - $ref: '#/components/parameters/friendRemoveFriendId'
       responses:
         200:
           description: Success
@@ -104,7 +104,13 @@ components:
           type: string
       in: path
       required: true
-    friendSearchFriendId:
+    friendRemoveUserId:
+      name: userId
+      schema:
+          type: string
+      in: path
+      required: true
+    friendRemoveFriendId:
       name: friendId
       schema:
           type: string

@@ -15,11 +15,12 @@ module.exports.addFriendService = async function addFriendService(addFriend) {
 };
 
 module.exports.searchFriendsService = async function searchFriendsService(
-  addFriend
+  userId,
+  searchFriends
 ) {
   return {
-    friends: await searchFriendsRepository(addFriend),
-    paginate: await getFriendsSearchPaginateRepository(addFriend),
+    friends: await searchFriendsRepository(userId, searchFriends),
+    paginate: await getFriendsSearchPaginateRepository(userId, searchFriends),
   };
 };
 

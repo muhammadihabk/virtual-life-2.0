@@ -32,8 +32,9 @@ app.post('/add', async function addFriend(req, res) {
   }
 });
 
-app.post('/search', async function searchFriends(req, res) {
+app.post('/:userId/search', async function searchFriends(req, res) {
   try {
+    const userId = req.params.userId;
     const { value: searchFriends, error } = searchFriendsSchema.validate(
       req.body,
       ValidateOptions
@@ -42,7 +43,7 @@ app.post('/search', async function searchFriends(req, res) {
       throw error;
     }
 
-    const friends = await searchFriendsService(searchFriends);
+    const friends = await searchFriendsService(userId, searchFriends);
     res.status(200).json(friends);
   } catch (error) {
     console.log('[Friend Controller]:', error);

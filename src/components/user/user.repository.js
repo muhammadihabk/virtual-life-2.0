@@ -27,7 +27,7 @@ module.exports.getUserByIdRepository = async function getUserByIdRepository(
       .select(UserSearchDefaultSelect)
       .from(Table.USER)
       .where({
-        id: userId,
+        [User.ID]: userId,
       });
 
     return user;
@@ -110,9 +110,9 @@ module.exports.updateUserRepository = async function updateUserRepository(
   try {
     const countAffectedRows = await knexClient
       .queryBuilder()
-      .from(Table.USER)
       .update(userBody)
-      .where({ id: userId });
+      .from(Table.USER)
+      .where({ [User.ID]: userId });
 
     return countAffectedRows;
   } catch (error) {
@@ -129,7 +129,7 @@ module.exports.deleteUserRepository = async function deleteUserRepository(
       .queryBuilder()
       .from(Table.USER)
       .del()
-      .where({ id: userId });
+      .where({ [User.ID]: userId });
 
     return countDeletedRows;
   } catch (error) {

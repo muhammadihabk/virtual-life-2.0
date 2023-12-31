@@ -84,7 +84,7 @@ app.patch('/:id', async function updateUser(req, res) {
     }
     const countAffectedRows = await updateUserService(req.params.id, user);
 
-    countAffectedRows == 1 ? res.sendStatus(204) : res.sendStatus(404);
+    countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
     console.log('[User Controller]:', error);
     if (error.details) {

@@ -3,7 +3,6 @@ const { PostSearchAllowedSelect } = require('./post.enums');
 const { Post, SortOrder } = require('../../../config/db/db.enums');
 
 module.exports.createPostSchema = joi.object({
-  author_id: joi.number().required(),
   post_text: joi.string().required(),
   post_image: joi.string(),
 });
@@ -28,3 +27,8 @@ module.exports.searchPostsSchema = joi.object({
     })
   ),
 });
+
+module.exports.updatePostSchema = joi.object({
+  post_text: joi.string(),
+  post_image: joi.string(),
+}).min(1);

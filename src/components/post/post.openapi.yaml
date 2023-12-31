@@ -1,0 +1,195 @@
+paths:
+  /posts:
+    post:
+      tags: [Post]
+      summary: Create a new post
+      description: Create a new post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePost'
+            example:
+              post_text: 'My post'
+              post_image: 'img link'
+        required: true
+      responses:
+        201:
+          description: Success
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /posts/{id}:
+    get:
+      tags: [Post]
+      summary: Get a post by id
+      description: Get a post by id
+      parameters:
+        - $ref: '#/components/parameters/postId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/Post'
+        404:
+          description: Post not found
+        500:
+          description: Failed
+    patch:
+      tags: [Post]
+      summary: Update a post
+      description: Update a post
+      parameters:
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePost'
+      responses:
+        200:
+          description: Success
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/Post'
+        400:
+          description: Failed
+        404:
+          description: Post not found
+        500:
+          description: Failed
+    delete:
+      tags: [Post]
+      summary: Delete a post
+      description: Delete a post
+      parameters:
+        - $ref: '#/components/parameters/postId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/Post'
+        404:
+          description: Post not found
+        500:
+          description: Failed
+  /posts/search:
+    post:
+      tags: [Post]
+      summary: Find posts
+      description: Find posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchPosts'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /posts/homefeed/{userId}:
+    get:
+      tags: [Post]
+      summary: Get homefeed for a user
+      description: Get homefeed for a user
+      parameters:
+        - $ref: '#/components/parameters/homefeed-userId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+        400:
+          description: Failed
+        500:
+          description: Failed
+
+components:
+  schemas:
+    CreatePost:
+      type: object
+      properties:
+        post_text:
+          type: string
+        post_image:
+          type: string
+      required: [post_text, post_image]
+    Post:
+      type: object
+      properties:
+        post_text:
+          type: string
+        post_image:
+          type: string
+    Posts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+    SearchPosts:
+      type: object
+      properties:
+        select:
+          type: array
+          items:
+            $ref: '#/components/x-post-variables/postColumns'
+        filter:
+          type: object
+          properties:
+            author_id:
+              type: string
+            post_text:
+              type: string
+        paginate:
+          $ref: '#/components/x-global-variables/searchPaginate'
+        sort:
+          type: array
+          items:
+            type: object
+            properties:
+              orderBy:
+                $ref: '#/components/x-post-variables/postColumns'
+              sortOrder:
+                $ref: '#/components/x-global-variables/searchSortOrder'
+    UpdatePost:
+      type: object
+      properties:
+        post_text:
+          type: string
+        post_image:
+          type: string
+  parameters:
+    postId:
+      name: id
+      schema:
+          type: string
+      in: path
+      required: true
+    homefeed-userId:
+      name: userId
+      schema:
+          type: string
+      in: path
+      required: true
+  x-post-variables:
+    postColumns:
+      type: string
+      enum: [author_id, post_text, post_image, created_at, updated_at]

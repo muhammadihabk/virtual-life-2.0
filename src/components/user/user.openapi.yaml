@@ -49,7 +49,7 @@ paths:
         - $ref: '#/components/parameters/userId'
       requestBody:
         content:
-          applicant/json:
+          application/json:
             schema:
               $ref: '#/components/schemas/User'
       responses:
@@ -95,6 +95,12 @@ paths:
       responses:
         200:
           description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
         400:
           description: Failed
         500:
@@ -181,7 +187,7 @@ components:
     userId:
       name: id
       schema:
-          type: string
+        type: string
       in: path
       required: true
   x-user-variables:

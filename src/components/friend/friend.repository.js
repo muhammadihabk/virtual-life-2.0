@@ -20,6 +20,7 @@ module.exports.addFriendRepository = async function addFriendRepository(
 };
 
 module.exports.searchFriendsRepository = async function searchFriendsRepository(
+  userId,
   searchOptions
 ) {
   let select = searchOptions.select || UserSearchDefaultSelect;
@@ -27,17 +28,14 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
   const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
   const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
   const sort = searchOptions.sort;
-  const userId = searchOptions.filter?.userId;
 
   const allFriendsSubQuery = knexClient
     .queryBuilder()
-    .select(Friend.FRIEND_ID)
+    .select([Friend.USER_ID, Friend.FRIEND_ID])
     .from(Table.FRIEND)
-    .where(`${Friend.USER_ID}`, userId)
     .union(function () {
-      this.select(Friend.FRIEND_ID);
+      this.select([Friend.FRIEND_ID, Friend.USER_ID]);
       this.from(Table.FRIEND);
-      this.where(`${Friend.FRIEND_ID}`, userId);
     })
     .as(`${Table.FRIEND}`);
 
@@ -51,7 +49,7 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
       `user.${User.ID}`
     );
 
-  query = applyFriendFilter(query, searchOptions);
+  query = applyFriendFilter(query, userId, searchOptions);
 
   query.limit(limit);
   query.offset(offset);
@@ -62,29 +60,28 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
     });
   }
 
-  return query
-    .then((rows) => rows)
-    .catch((error) => {
-      console.log('[Friend Repository]:', error);
-      throw error;
-    });
+  try {
+    const friends = await query;
+
+    return friends;
+  } catch (error) {
+    console.log('[Friend Repository]:', error);
+    throw error;
+  }
 };
 
 module.exports.getFriendsSearchPaginateRepository =
-  async function getFriendsSearchPaginateRepository(searchOptions) {
-    const userId = searchOptions.filter?.userId;
+  async function getFriendsSearchPaginateRepository(userId, searchOptions) {
     const limit = searchOptions.paginate?.limit || SearchDefaultLimit;
     const offset = searchOptions.paginate?.offset || SearchDefaultOffset;
 
     const allFriendsSubQuery = knexClient
       .queryBuilder()
-      .select(Friend.FRIEND_ID)
+      .select([Friend.USER_ID, Friend.FRIEND_ID])
       .from(Table.FRIEND)
-      .where(`${Friend.USER_ID}`, userId)
       .union(function () {
-        this.select(Friend.FRIEND_ID);
+        this.select([Friend.FRIEND_ID, Friend.USER_ID]);
         this.from(Table.FRIEND);
-        this.where(`${Friend.FRIEND_ID}`, userId);
       })
       .as(`${Table.FRIEND}`);
 
@@ -97,23 +94,24 @@ module.exports.getFriendsSearchPaginateRepository =
         `user.${User.ID}`
       );
 
-    query = applyFriendFilter(query, searchOptions);
+    query = applyFriendFilter(query, userId, searchOptions);
 
     try {
       const [{ count }] = await query.count(`${User.ID} AS count`);
-      
+
       return {
         count,
         limit,
         offset,
-      }
+      };
     } catch (error) {
       console.log('[Friend Repository]:', error);
       throw error;
     }
   };
 
-function applyFriendFilter(query, payload) {
+function applyFriendFilter(query, userId, payload) {
+  query.where(`${Table.FRIEND}.${Friend.USER_ID}`, userId);
   const filter = payload.filter;
   if (filter) {
     if (filter.friendsIds) {
