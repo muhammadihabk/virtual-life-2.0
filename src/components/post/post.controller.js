@@ -2,12 +2,16 @@ const express = require('express');
 const {
   ValidateOptions,
 } = require('../../../config/validation/validation.config');
-const { createPostSchema, searchPostsSchema, updatePostSchema } = require('./post.validation');
+const {
+  createPostSchema,
+  searchPostsSchema,
+  updatePostSchema,
+} = require('./post.validation');
 const {
   createPostService,
   getPostByIdService,
   searchPostsService,
-  getHomeFeedService,
+  getHomefeedService,
   updatePostService,
   deletePostService,
 } = require('./post.service');
@@ -71,10 +75,14 @@ app.post('/search', async function searchPosts(req, res) {
   }
 });
 
-app.get('/homefeed/:userId', async function getHomeFeed(req, res) {
+app.get('/homefeed/:userId', async function getHomefeed(req, res) {
   try {
     const userId = req.params.userId;
-    const posts = await getHomeFeedService(userId);
+    const paginateOptions = {
+      limit: parseInt(req.query?.limit),
+      offset: parseInt(req.query?.offset)
+    };
+    const posts = await getHomefeedService(userId, paginateOptions);
 
     res.status(200).json(posts);
   } catch (error) {

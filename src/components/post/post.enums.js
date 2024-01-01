@@ -4,6 +4,8 @@ module.exports.PostDefaultSelect = [
   Post.AUTHOR_ID,
   Post.POST_TEXT,
   Post.POST_IMAGE,
+  Post.CREATED_AT,
+  Post.UPDATED_AT,
 ];
 
 module.exports.PostSearchAllowedSelect = [

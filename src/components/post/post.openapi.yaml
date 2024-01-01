@@ -52,10 +52,6 @@ paths:
       responses:
         200:
           description: Success
-          content:
-            application/schema:
-              schema:
-                $ref: '#/components/schemas/Post'
         400:
           description: Failed
         404:
@@ -71,10 +67,6 @@ paths:
       responses:
         200:
           description: Success
-          content:
-            application/schema:
-              schema:
-                $ref: '#/components/schemas/Post'
         404:
           description: Post not found
         500:
@@ -82,22 +74,20 @@ paths:
   /posts/search:
     post:
       tags: [Post]
-      summary: Find posts
-      description: Find posts
+      summary: Search posts
+      description: Search posts
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchPosts'
+              $ref: '#/components/schemas/SearchPostsRequestBody'
       responses:
         200:
           description: Success
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Post'
+                $ref: '#/components/schemas/HomefeedOrSearchPostsResponse'
         400:
           description: Failed
         500:
@@ -117,7 +107,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Post'
+                  $ref: '#/components/schemas/HomefeedOrSearchPostsResponse'
         400:
           description: Failed
         500:
@@ -136,15 +126,54 @@ components:
     Post:
       type: object
       properties:
+        post:
+          type: object
+          properties:
+            post_text:
+              type: string
+            post_image:
+              type: string
+            created_at:
+              type: string
+            updated_at:
+              type: string
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              author_id:
+                type: number
+              comment_text:
+                type: string
+              count_replies:
+                type: number
+              created_at:
+                type: string
+              updated_at:
+                type: string
+    HomefeedOrSearchPost:
+      type: object
+      properties:
+        author_id:
+          type: string
         post_text:
           type: string
         post_image:
           type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        count_comments:
+          type: number
+        count_reactions:
+          type: number
     Posts:
       type: array
       items:
         $ref: '#/components/schemas/Post'
-    SearchPosts:
+    SearchPostsRequestBody:
       type: object
       properties:
         select:
@@ -169,6 +198,15 @@ components:
                 $ref: '#/components/x-post-variables/postColumns'
               sortOrder:
                 $ref: '#/components/x-global-variables/searchSortOrder'
+    HomefeedOrSearchPostsResponse:
+      type: object
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/HomefeedOrSearchPost'
+        paginate:
+          $ref: '#/components/x-global-variables/searchPaginate'
     UpdatePost:
       type: object
       properties:

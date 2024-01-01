@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Users'
+                $ref: '#/components/schemas/SearchFriendsResponse'
         400:
           description: Failed
         500:
@@ -97,6 +97,15 @@ components:
                 $ref: '#/components/x-user-variables/userColumns'
               sortOrder:
                 $ref: '#/components/x-global-variables/searchSortOrder'
+    SearchFriendsResponse:
+      type: object
+      properties:
+        friends:
+          type: array
+          items:
+            $ref: '#/components/schemas/Users'
+        paginate:
+          $ref: '#/components/x-global-variables/searchPaginate'
   parameters:
     friendSearchUserId:
       name: userId

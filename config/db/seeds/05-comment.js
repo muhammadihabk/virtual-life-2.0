@@ -66,7 +66,7 @@ exports.seed = async function (knex) {
       id: 10,
       author_id: 4,
       post_id: 5,
-      parent_comment_id: 10,
+      parent_comment_id: 9,
       comment_text: 'some comment',
     },
     {

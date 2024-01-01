@@ -55,10 +55,6 @@ paths:
       responses:
         200:
           description: Success
-          content:
-            application/schema:
-              schema:
-                $ref: '#/components/schemas/User'
         400:
           description: Failed
         404:
@@ -74,10 +70,6 @@ paths:
       responses:
         200:
           description: Success
-          content:
-            application/schema:
-              schema:
-                $ref: '#/components/schemas/User'
         404:
           description: User not found
         500:
