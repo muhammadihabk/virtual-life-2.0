@@ -99,6 +99,8 @@ paths:
       description: Get homefeed for a user
       parameters:
         - $ref: '#/components/parameters/homefeed-userId'
+        - $ref: '#/components/parameters/homefeed-limit'
+        - $ref: '#/components/parameters/homefeed-offset'
       responses:
         200:
           description: Success
@@ -155,6 +157,8 @@ components:
     HomefeedOrSearchPost:
       type: object
       properties:
+        post_id:
+          type: string
         author_id:
           type: string
         post_text:
@@ -221,6 +225,16 @@ components:
           type: string
       in: path
       required: true
+    homefeed-limit:
+      name: limit
+      schema:
+          type: string
+      in: query
+    homefeed-offset:
+      name: offset
+      schema:
+          type: string
+      in: query
     homefeed-userId:
       name: userId
       schema:

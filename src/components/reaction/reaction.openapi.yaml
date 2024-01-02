@@ -1,0 +1,98 @@
+paths:
+  /reactions:
+    post:
+      tags: [Reaction]
+      summary: Create a reaction
+      description: Create a reaction
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReaction'
+        required: true
+      responses:
+        201:
+          description: Success
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /reactions/post/{id}:
+    get:
+      tags: [Reaction]
+      summary: Get a reaction of a post
+      description: Get a reaction
+      parameters:
+        - $ref: '#/components/parameters/activityId'
+      responses:
+        200:
+          description: Success
+        500:
+          description: Failed
+    delete:
+      tags: [Reaction]
+      summary: Delete a reaction of a post
+      description: Delete a reaction
+      parameters:
+        - $ref: '#/components/parameters/activityId'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Post not found
+        500:
+          description: Failed
+  /reactions/comment/{id}:
+    get:
+      tags: [Reaction]
+      summary: Get a reaction of a comment
+      description: Get a reaction
+      parameters:
+        - $ref: '#/components/parameters/activityId'
+      responses:
+        200:
+          description: Success
+        500:
+          description: Failed
+    delete:
+      tags: [Reaction]
+      summary: Delete a reaction of a comment
+      description: Delete a reaction
+      parameters:
+        - $ref: '#/components/parameters/activityId'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Post not found
+        500:
+          description: Failed
+
+components:
+  schemas:
+    CreateReaction:
+      type: object
+      properties:
+        activity_id:
+          type: string
+        activity_kind:
+          type: string
+          enum: ['post', 'comment']
+        reaction_kind:
+          type: string
+          enum: ['like', 'love', 'sad', 'laugh', 'angry']
+      required: [activity_id, activity_kind, reaction_kind]
+    Reaction:
+      type: object
+      properties:
+        author_id:
+          type: string
+        reaction_kind:
+          type: string
+  parameters:
+    activityId:
+      name: id
+      schema:
+        type: string
+      in: path
+      required: true

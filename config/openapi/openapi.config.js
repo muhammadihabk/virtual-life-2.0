@@ -49,6 +49,19 @@ Object.assign(components.schemas, postSchemas);
 Object.assign(components.parameters, postParameters);
 Object.assign(components, postVariables);
 
+// Add src/reaction doc
+const reactionOpenapiDoc = fs.readFileSync(
+  'src/components/reaction/reaction.openapi.yaml',
+  'utf8'
+);
+const reactionSwaggerDocument = yaml.parse(reactionOpenapiDoc);
+const { paths: reactionPaths } = reactionSwaggerDocument;
+const { schemas: reactionSchemas, parameters: reactionParameters, ...reactionVariables } = reactionSwaggerDocument.components;
+Object.assign(paths, reactionPaths);
+Object.assign(components.schemas, reactionSchemas);
+Object.assign(components.parameters, reactionParameters);
+Object.assign(components, reactionVariables);
+
 mainSwaggerDocument.paths = paths;
 mainSwaggerDocument.components = components;
 

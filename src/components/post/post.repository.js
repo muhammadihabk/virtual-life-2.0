@@ -14,7 +14,7 @@ module.exports.createPostRepository = async function createPostRepository(
   postDetails
 ) {
   try {
-    // TODO: Remove this line when authentication is implemented
+    // TODO: Use the author id from the token when authentication is implemented
     postDetails[Post.AUTHOR_ID] = 1;
 
     await knexClient.queryBuilder().insert(postDetails).into(Table.POST);
@@ -111,6 +111,7 @@ module.exports.searchPostsRepository = async function searchPostsRepository(
       select
         .map((element) => `${Table.POST}.${element}`)
         .concat([
+          `${Table.POST}.${Post.ID} AS post_id`,
           'comments_counts.count_comments',
           'reactions_counts.count_reactions',
         ])
@@ -234,6 +235,7 @@ module.exports.getHomefeedRepository = async function getHomefeedRepository(
   let query = knexClient
     .queryBuilder()
     .select([
+      'comments_counts.post_id',
       `comments_counts.${Post.AUTHOR_ID}`,
       `comments_counts.${Post.POST_TEXT}`,
       `comments_counts.${Post.POST_IMAGE}`,
