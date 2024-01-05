@@ -63,6 +63,7 @@ module.exports.getPostByIdRepository = async function getPostByIdRepository(
     const comments = await knexClient
       .queryBuilder()
       .select([
+        `${Table.COMMENT}.${Comment.ID}`,
         `${Table.COMMENT}.${Comment.AUTHOR_ID}`,
         `${Table.COMMENT}.${Comment.COMMENT_TEXT}`,
         'replies_counts.count_replies',
@@ -77,14 +78,8 @@ module.exports.getPostByIdRepository = async function getPostByIdRepository(
       )
       .where({
         [Comment.POST_ID]: postId,
+        [`${Table.COMMENT}.${Comment.PARENT_COMMENT_ID}`]: null,
       });
-
-      // console.log(
-      //   '\n\n########## c:\n',
-      //   count_replies_query.toQuery(),
-      //   '\n##########\n\n'
-      // );
-      // console.log('\n\n########## c:\n', comments.toQuery(), '\n##########\n\n');
 
     return { post, comments };
   } catch (error) {
@@ -338,14 +333,14 @@ module.exports.updatePostRepository = async function updatePostRepository(
 };
 
 module.exports.deletePostRepository = async function deletePostRepository(
-  postId
+  id
 ) {
   try {
     const countDeletedRows = await knexClient
       .queryBuilder()
       .from(Table.POST)
       .del()
-      .where({ [Post.ID]: postId });
+      .where({ [Post.ID]: id });
 
     return countDeletedRows;
   } catch (error) {

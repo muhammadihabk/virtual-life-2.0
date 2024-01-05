@@ -112,5 +112,32 @@ exports.seed = async function (knex) {
       parent_comment_id: 9,
       comment_text: 'some comment',
     },
+    {
+      id: 18,
+      author_id: 4,
+      post_id: 1,
+      parent_comment_id: 1,
+      comment_text: 'A reply',
+    },
+    {
+      id: 19,
+      author_id: 4,
+      post_id: 1,
+      parent_comment_id: 1,
+      comment_text: 'Another reply',
+    },
+    {
+      id: 20,
+      author_id: 5,
+      post_id: 1,
+      comment_text: 'Another comment',
+    },
+    {
+      id: 21,
+      author_id: 8,
+      post_id: 1,
+      parent_comment_id: 20,
+      comment_text: 'A reply',
+    },
   ]);
 };

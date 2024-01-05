@@ -268,5 +268,12 @@ exports.seed = async function (knex) {
       reaction_kind: 'laugh',
       activity_kind: 'comment',
     },
+    {
+      id: 38,
+      author_id: 1,
+      activity_id: 17,
+      reaction_kind: 'like',
+      activity_kind: 'comment',
+    },
   ]);
 };

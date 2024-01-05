@@ -6,7 +6,7 @@ const mainSwaggerDocument = yaml.parse(mainOpenapiDoc);
 const paths = {};
 const components = {
   schemas: {},
-  parameters: {},
+  parameters: mainSwaggerDocument.components.parameters,
   'x-global-variables': mainSwaggerDocument.components['x-global-variables'],
 };
 
@@ -61,6 +61,19 @@ Object.assign(paths, reactionPaths);
 Object.assign(components.schemas, reactionSchemas);
 Object.assign(components.parameters, reactionParameters);
 Object.assign(components, reactionVariables);
+
+// Add src/comment doc
+const commentOpenapiDoc = fs.readFileSync(
+  'src/components/comment/comment.openapi.yaml',
+  'utf8'
+);
+const commentSwaggerDocument = yaml.parse(commentOpenapiDoc);
+const { paths: commentPaths } = commentSwaggerDocument;
+const { schemas: commentSchemas, parameters: commentParameters, ...commentVariables } = commentSwaggerDocument.components;
+Object.assign(paths, commentPaths);
+Object.assign(components.schemas, commentSchemas);
+Object.assign(components.parameters, commentParameters);
+Object.assign(components, commentVariables);
 
 mainSwaggerDocument.paths = paths;
 mainSwaggerDocument.components = components;

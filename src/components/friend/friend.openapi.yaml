@@ -19,13 +19,13 @@ paths:
           description: Failed
         500:
           description: Failed
-  /friends/{userId}/search/:
+  /friends/{userId}/search:
     post:
       tags: [Friend]
       summary: Find friends
       description: Find friends
       parameters:
-        - $ref: '#/components/parameters/friendSearchUserId'
+        - $ref: '#/components/parameters/global-userId'
       requestBody:
         content:
           application/json:
@@ -48,8 +48,8 @@ paths:
       summary: Remove a friend
       description: Remove a friend
       parameters:
-        - $ref: '#/components/parameters/friendRemoveUserId'
-        - $ref: '#/components/parameters/friendRemoveFriendId'
+        - $ref: '#/components/parameters/global-userId'
+        - $ref: '#/components/parameters/friendId'
       responses:
         200:
           description: Success
@@ -107,19 +107,7 @@ components:
         paginate:
           $ref: '#/components/x-global-variables/searchPaginate'
   parameters:
-    friendSearchUserId:
-      name: userId
-      schema:
-          type: string
-      in: path
-      required: true
-    friendRemoveUserId:
-      name: userId
-      schema:
-          type: string
-      in: path
-      required: true
-    friendRemoveFriendId:
+    friendId:
       name: friendId
       schema:
           type: string

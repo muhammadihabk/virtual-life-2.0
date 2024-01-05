@@ -23,7 +23,7 @@ paths:
       summary: Get a reaction of a post
       description: Get a reaction
       parameters:
-        - $ref: '#/components/parameters/activityId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -34,7 +34,7 @@ paths:
       summary: Delete a reaction of a post
       description: Delete a reaction
       parameters:
-        - $ref: '#/components/parameters/activityId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -48,7 +48,7 @@ paths:
       summary: Get a reaction of a comment
       description: Get a reaction
       parameters:
-        - $ref: '#/components/parameters/activityId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -59,7 +59,7 @@ paths:
       summary: Delete a reaction of a comment
       description: Delete a reaction
       parameters:
-        - $ref: '#/components/parameters/activityId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -89,10 +89,3 @@ components:
           type: string
         reaction_kind:
           type: string
-  parameters:
-    activityId:
-      name: id
-      schema:
-        type: string
-      in: path
-      required: true

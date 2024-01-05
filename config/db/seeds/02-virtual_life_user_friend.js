@@ -1,7 +1,7 @@
 const {
   CreateFriend,
 } = require('../../../src/components/user/user.interfaces');
-const { Table, Friend } = require('../db.enums');
+const { Table } = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex

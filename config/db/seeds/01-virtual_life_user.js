@@ -18,7 +18,7 @@ exports.seed = async function (knex) {
     {
       id: 2,
       first_name: 'Ihab',
-      last_name: 'Anass',
+      last_name: 'Ahmed',
       email: 'ih.an@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),
@@ -26,7 +26,7 @@ exports.seed = async function (knex) {
     {
       id: 3,
       first_name: 'Hazim',
-      last_name: 'Mostafa',
+      last_name: 'Eisa',
       email: 'ha.mo@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),
@@ -34,7 +34,7 @@ exports.seed = async function (knex) {
     {
       id: 4,
       first_name: 'Ahmed',
-      last_name: 'Elsayed',
+      last_name: 'Ibrahim',
       email: 'ah.el@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),
@@ -42,7 +42,7 @@ exports.seed = async function (knex) {
     {
       id: 5,
       first_name: 'Omar',
-      last_name: 'Elsayed',
+      last_name: 'Ismail',
       email: 'om.el@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),
@@ -50,7 +50,7 @@ exports.seed = async function (knex) {
     {
       id: 6,
       first_name: 'Mrwan',
-      last_name: 'Shahin',
+      last_name: 'Jacob',
       email: 'mr.sh@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),
@@ -58,7 +58,7 @@ exports.seed = async function (knex) {
     {
       id: 7,
       first_name: 'Adham',
-      last_name: 'Muhammad',
+      last_name: 'Musa',
       email: 'ad.mo@example.com',
       user_password: 'pass',
       dob: new Date('2000-01-01'),

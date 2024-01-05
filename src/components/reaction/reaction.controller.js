@@ -91,4 +91,4 @@ app.delete('/comment/:id', async function deleteReactionsOfComment(req, res) {
   }
 });
 
-module.exports.ReactionsController = app;
+module.exports.ReactionController = app;

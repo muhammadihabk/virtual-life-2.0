@@ -29,7 +29,7 @@ paths:
       summary: Get a user by id
       description: Get a user by id
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -46,7 +46,7 @@ paths:
       summary: Update a user
       description: Update a user
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/global-id'
       requestBody:
         content:
           application/json:
@@ -66,7 +66,7 @@ paths:
       summary: Delete a user
       description: Delete a user
       parameters:
-        - $ref: '#/components/parameters/userId'
+        - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
@@ -175,13 +175,6 @@ components:
         user_password:
           type: string
       required: [first_name, last_name, dob, email, user_password]
-  parameters:
-    userId:
-      name: id
-      schema:
-        type: string
-      in: path
-      required: true
   x-user-variables:
     userColumns:
       type: string

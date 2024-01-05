@@ -1,0 +1,120 @@
+paths:
+  /comments:
+    post:
+      tags: [Comment]
+      summary: Create a new Comment
+      description: Create a new Comment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateComment'
+            example:
+              post_id: 1
+              parent_comment_id: 1
+              comment_text: 'My comment'
+        required: true
+      responses:
+        201:
+          description: Success
+        400:
+          description: Failed
+        500:
+          description: Failed
+  /comments/post/{postId}/parent-comment-id/{commentId}:
+    get:
+      tags: [Comment]
+      summary: Get comments for a post
+      description: Get comments for a post
+      parameters:
+        - $ref: '#/components/parameters/global-postId'
+        - $ref: '#/components/parameters/commentId'
+      responses:
+        200:
+          description: Success
+          content:
+            application/schema:
+              schema:
+                $ref: '#/components/schemas/Comments'
+        500:
+          description: Failed
+  /comments/{id}:
+    patch:
+      tags: [Comment]
+      summary: Update a coment
+      description: Update a coment
+      parameters:
+        - $ref: '#/components/parameters/global-id'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateComment'
+      responses:
+        200:
+          description: Success
+        400:
+          description: Failed
+        404:
+          description: Post not found
+        500:
+          description: Failed
+    delete:
+      tags: [Comment]
+      summary: Delete a comment
+      description: Delete a comment
+      parameters:
+        - $ref: '#/components/parameters/global-id'
+      responses:
+        200:
+          description: Success
+        404:
+          description: Post not found
+        500:
+          description: Failed
+
+components:
+  schemas:
+    CreateComment:
+      type: object
+      properties:
+        post_id:
+          type: number
+        parent_comment_id:
+          type: number
+        comment_text:
+          type: string
+      required: [post_id, parent_comment_id, comment_text]
+    Comment:
+      type: object
+      properties:
+        post:
+          type: object
+          properties:
+            id:
+              type: number
+            author_id:
+              type: number
+            comment_text:
+              type: string
+            created_at:
+              type: string
+            updated_at:
+              type: string
+            count_replies:
+              type: number
+    Comments:
+      type: array
+      items:
+        $ref: '#/components/schemas/Comment'
+    UpdateComment:
+      type: object
+      properties:
+        comment_text:
+          type: string
+  parameters:
+    commentId:
+      name: commentId
+      schema:
+        type: string
+      in: path

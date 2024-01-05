@@ -8,6 +8,25 @@ servers:
   - url: http://localhost:3000
 
 components:
+  parameters:
+    global-id:
+      name: id
+      schema:
+          type: string
+      in: path
+      required: true
+    global-userId:
+      name: userId
+      schema:
+          type: string
+      in: path
+      required: true
+    global-postId:
+      name: postId
+      schema:
+        type: string
+      in: path
+      required: true
   x-global-variables:
     searchPaginate:
       type: object
