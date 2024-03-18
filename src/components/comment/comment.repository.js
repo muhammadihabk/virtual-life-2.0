@@ -2,9 +2,7 @@ const knexClient = require('../../../config/db/knex-client');
 const { Table, Comment } = require('../../../config/db/db.enums');
 const { CommentDefaultSelect } = require('./comment.enums');
 
-module.exports.createCommentRepository = async function createCommentRepository(
-  commentDetails
-) {
+module.exports.createCommentRepository = async function createCommentRepository(commentDetails) {
   try {
     // TODO: Use the author id from the token when authentication is implemented
     commentDetails[Comment.AUTHOR_ID] = 1;
@@ -16,11 +14,9 @@ module.exports.createCommentRepository = async function createCommentRepository(
   }
 };
 
-module.exports.getCommentsRepository = async function getCommentsRepository(
-  postId,
-  parentCommentId
-) {
+module.exports.getCommentsRepository = async function getCommentsRepository(postId, inParentCommentId) {
   try {
+    const parentCommentId = isNaN(inParentCommentId) ? null : inParentCommentId;
     let parentCommentsIds = knexClient
       .queryBuilder()
       .select([`${Table.COMMENT}.${Comment.ID}`])
@@ -32,12 +28,7 @@ module.exports.getCommentsRepository = async function getCommentsRepository(
 
     const count_replies_query = knexClient
       .queryBuilder()
-      .select([
-        `${Table.COMMENT}.${Comment.PARENT_COMMENT_ID} AS ${Comment.ID}`,
-        knexClient.raw(
-          `COUNT(${Table.COMMENT}.${Comment.PARENT_COMMENT_ID}) AS count_replies`
-        ),
-      ])
+      .select([`${Table.COMMENT}.${Comment.PARENT_COMMENT_ID} AS ${Comment.ID}`, knexClient.raw(`COUNT(${Table.COMMENT}.${Comment.PARENT_COMMENT_ID}) AS count_replies`)])
       .from(Table.COMMENT)
       .where(`${Comment.POST_ID}`, postId)
       .whereIn(`${Comment.PARENT_COMMENT_ID}`, parentCommentsIds)
@@ -48,11 +39,7 @@ module.exports.getCommentsRepository = async function getCommentsRepository(
       .queryBuilder()
       .select(CommentDefaultSelect.map((element) => `${Table.COMMENT}.${element}`).concat(['replies_counts.count_replies']))
       .from(Table.COMMENT)
-      .leftJoin(
-        count_replies_query,
-        `${Table.COMMENT}.${Comment.ID}`,
-        `replies_counts.${Comment.ID}`
-      )
+      .leftJoin(count_replies_query, `${Table.COMMENT}.${Comment.ID}`, `replies_counts.${Comment.ID}`)
       .where({
         [Comment.POST_ID]: postId,
         [Comment.PARENT_COMMENT_ID]: parentCommentId,
@@ -65,10 +52,7 @@ module.exports.getCommentsRepository = async function getCommentsRepository(
   }
 };
 
-module.exports.updateCommentRepository = async function updateCommentRepository(
-  id,
-  commentDetails
-) {
+module.exports.updateCommentRepository = async function updateCommentRepository(id, commentDetails) {
   try {
     const countAffectedRows = await knexClient
       .queryBuilder()
@@ -83,9 +67,7 @@ module.exports.updateCommentRepository = async function updateCommentRepository(
   }
 };
 
-module.exports.deleteCommentRepository = async function deleteCommentRepository(
-  id
-) {
+module.exports.deleteCommentRepository = async function deleteCommentRepository(id) {
   try {
     const countAffectedRows = await knexClient
       .queryBuilder()
@@ -98,4 +80,4 @@ module.exports.deleteCommentRepository = async function deleteCommentRepository(
     console.log('[Comment Repository]:', error);
     throw error;
   }
-}
+};

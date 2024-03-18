@@ -34,9 +34,7 @@ app.get(
   '/post/:postId/parent-comment-id/:parentCommentId',
   async function getComments(req, res) {
     try {
-      const parentCommentId = isNaN(req.params.parentCommentId)
-        ? null
-        : req.params.parentCommentId;
+      const parentCommentId = req.params.parentCommentId;
       const comments = await getCommentsService(
         req.params.postId,
         parentCommentId
