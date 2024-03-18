@@ -1,7 +1,5 @@
 const express = require('express');
-const {
-  ValidateOptions,
-} = require('../../../config/validation/validation.config');
+const { ValidateOptions } = require('../../../config/validation/validation.config');
 const { createCommentSchema, updateCommentSchema } = require('./comment.validation');
 const { createCommentService, getCommentsService, updateCommentService, deleteCommentService } = require('./comment.service');
 
@@ -9,10 +7,7 @@ const app = express();
 
 app.post('/', async function createComment(req, res) {
   try {
-    const { value: commentDetails, error } = createCommentSchema.validate(
-      req.body,
-      ValidateOptions
-    );
+    const { value: commentDetails, error } = createCommentSchema.validate(req.body, ValidateOptions);
     if (error) {
       throw error;
     }
@@ -30,37 +25,25 @@ app.post('/', async function createComment(req, res) {
   }
 });
 
-app.get(
-  '/post/:postId/parent-comment-id/:parentCommentId',
-  async function getComments(req, res) {
-    try {
-      const parentCommentId = req.params.parentCommentId;
-      const comments = await getCommentsService(
-        req.params.postId,
-        parentCommentId
-      );
+app.get('/:commentId', async function getComments(req, res) {
+  try {
+    const commentId = req.params.commentId;
+    const comments = await getCommentsService(commentId);
 
-      res.json(comments);
-    } catch (error) {
-      console.log('[Comment Controller]:', error);
-      res.sendStatus(500);
-    }
+    res.json(comments);
+  } catch (error) {
+    console.log('[Comment Controller]:', error);
+    res.sendStatus(500);
   }
-);
+});
 
 app.patch('/:id', async function updateComment(req, res) {
   try {
-    const { value: commentDetails, error } = updateCommentSchema.validate(
-      req.body,
-      ValidateOptions
-    );
+    const { value: commentDetails, error } = updateCommentSchema.validate(req.body, ValidateOptions);
     if (error) {
       throw error;
     }
-    const countAffectedRows = await updateCommentService(
-      req.params.id,
-      commentDetails
-    );
+    const countAffectedRows = await updateCommentService(req.params.id, commentDetails);
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {

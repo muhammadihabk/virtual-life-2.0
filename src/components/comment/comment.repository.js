@@ -14,24 +14,22 @@ module.exports.createCommentRepository = async function createCommentRepository(
   }
 };
 
-module.exports.getCommentsRepository = async function getCommentsRepository(postId, inParentCommentId) {
+module.exports.getCommentsRepository = async function getCommentsRepository(inCommentId) {
   try {
-    const parentCommentId = isNaN(inParentCommentId) ? null : inParentCommentId;
-    let parentCommentsIds = knexClient
+    const commentId = isNaN(inCommentId) ? null : inCommentId;
+    let commentsIds = knexClient
       .queryBuilder()
       .select([`${Table.COMMENT}.${Comment.ID}`])
       .from(Table.COMMENT)
       .where({
-        [Comment.POST_ID]: postId,
-        [Comment.PARENT_COMMENT_ID]: parentCommentId,
+        [Comment.PARENT_COMMENT_ID]: commentId,
       });
 
     const count_replies_query = knexClient
       .queryBuilder()
       .select([`${Table.COMMENT}.${Comment.PARENT_COMMENT_ID} AS ${Comment.ID}`, knexClient.raw(`COUNT(${Table.COMMENT}.${Comment.PARENT_COMMENT_ID}) AS count_replies`)])
       .from(Table.COMMENT)
-      .where(`${Comment.POST_ID}`, postId)
-      .whereIn(`${Comment.PARENT_COMMENT_ID}`, parentCommentsIds)
+      .whereIn(`${Comment.PARENT_COMMENT_ID}`, commentsIds)
       .groupBy(`${Table.COMMENT}.${Comment.PARENT_COMMENT_ID}`)
       .as('replies_counts');
 
@@ -41,8 +39,7 @@ module.exports.getCommentsRepository = async function getCommentsRepository(post
       .from(Table.COMMENT)
       .leftJoin(count_replies_query, `${Table.COMMENT}.${Comment.ID}`, `replies_counts.${Comment.ID}`)
       .where({
-        [Comment.POST_ID]: postId,
-        [Comment.PARENT_COMMENT_ID]: parentCommentId,
+        [Comment.PARENT_COMMENT_ID]: commentId,
       });
 
     return comments;
