@@ -2,6 +2,7 @@ const express = require('express');
 const { ValidateOptions } = require('../../../config/validation/validation.config');
 const { createCommentSchema, updateCommentSchema } = require('./comment.validation');
 const { createCommentService, getCommentsService, updateCommentService, deleteCommentService } = require('./comment.service');
+const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
 const app = express();
 
@@ -15,13 +16,8 @@ app.post('/', async function createComment(req, res) {
     await createCommentService(commentDetails);
     res.sendStatus(201);
   } catch (error) {
-    console.log('[Comment Controller]:', error);
-    if (error.details) {
-      const errorMessages = error.details.map((element) => element.message);
-      res.status(400).json(errorMessages);
-    } else {
-      res.sendStatus(500);
-    }
+    console.log('[Comment Controller]');
+    internalErrorHandler(res, error);
   }
 });
 
@@ -47,13 +43,8 @@ app.patch('/:id', async function updateComment(req, res) {
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
-    console.log('[Comment Controller]:', error);
-    if (error.details) {
-      errorMessages = error.details.map((element) => element.message);
-      res.status(400).json(errorMessages);
-    } else {
-      res.sendStatus(500);
-    }
+    console.log('[Comment Controller]');
+    internalErrorHandler(res, error);
   }
 });
 
