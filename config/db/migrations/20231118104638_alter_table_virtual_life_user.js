@@ -1,4 +1,4 @@
-const { Table, User } = require('../db.enums');
+const { Table, User, AlterUser } = require('../db.enums');
 
 /**
  * @param { import("knex").Knex } knex
@@ -7,7 +7,7 @@ const { Table, User } = require('../db.enums');
 exports.up = function (knex) {
   return knex.schema.table(Table.USER, (table) => {
     table.string(User.EMAIL, 64).notNullable();
-    table.string(User.PASSWORD, 64).notNullable();
+    table.string(AlterUser.PASSWORD, 64).notNullable();
   });
 };
 
@@ -18,6 +18,6 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema.table(Table.USER, (table) => {
     table.dropColumn(User.EMAIL);
-    table.dropColumn(User.PASSWORD);
+    table.dropColumn(AlterUser.PASSWORD);
   });
 };

@@ -13,20 +13,10 @@ exports.up = function (knex) {
     table.json(AlterPost.REACTIONS_COUNTS).notNullable();
     table.integer(AlterPost.COMMENTS_COUNT).notNullable();
     table.boolean(AlterPost.IS_ACTIVE).notNullable().defaultTo(true);
-    table
-      .datetime(Post.CREATED_AT)
-      .notNullable()
-      .defaultTo(knex.raw('CURRENT_TIMESTAMP'));
-    table
-      .dateTime(Post.UPDATED_AT)
-      .notNullable()
-      .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+    table.datetime(Post.CREATED_AT).notNullable().defaultTo(knex.raw('CURRENT_TIMESTAMP'));
+    table.dateTime(Post.UPDATED_AT).notNullable().defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
 
-    table
-      .foreign(Post.AUTHOR_ID)
-      .references(User.ID)
-      .inTable(Table.USER)
-      .onDelete('CASCADE');
+    table.foreign(Post.AUTHOR_ID).references(User.ID).inTable(Table.USER).onDelete('CASCADE');
   });
 };
 

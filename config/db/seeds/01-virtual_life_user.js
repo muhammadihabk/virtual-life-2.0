@@ -1,3 +1,4 @@
+const { generatePassword } = require('../../../src/auth/password');
 const { Table } = require('../db.enums');
 
 /**
@@ -6,13 +7,13 @@ const { Table } = require('../db.enums');
  */
 exports.seed = async function (knex) {
   await knex(Table.USER).delete();
-  await knex(Table.USER).insert([
+
+  let users = [
     {
       id: 1,
       first_name: 'Muhammad',
       last_name: 'Ihab',
       email: 'mo.ih@example.com',
-      user_password: 'pass',
       dob: new Date('1998-12-03'),
     },
     {
@@ -20,7 +21,6 @@ exports.seed = async function (knex) {
       first_name: 'Ihab',
       last_name: 'Ahmed',
       email: 'ih.an@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -28,7 +28,6 @@ exports.seed = async function (knex) {
       first_name: 'Hazim',
       last_name: 'Eisa',
       email: 'ha.mo@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -36,7 +35,6 @@ exports.seed = async function (knex) {
       first_name: 'Ahmed',
       last_name: 'Ibrahim',
       email: 'ah.el@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -44,7 +42,6 @@ exports.seed = async function (knex) {
       first_name: 'Omar',
       last_name: 'Ismail',
       email: 'om.el@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -52,7 +49,6 @@ exports.seed = async function (knex) {
       first_name: 'Mrwan',
       last_name: 'Jacob',
       email: 'mr.sh@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -60,7 +56,6 @@ exports.seed = async function (knex) {
       first_name: 'Adham',
       last_name: 'Musa',
       email: 'ad.mo@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -68,7 +63,6 @@ exports.seed = async function (knex) {
       first_name: 'rob',
       last_name: 'bot1',
       email: 'ro.bo1@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -76,7 +70,6 @@ exports.seed = async function (knex) {
       first_name: 'rob',
       last_name: 'bot2',
       email: 'ro.bo2@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -84,7 +77,6 @@ exports.seed = async function (knex) {
       first_name: 'rob',
       last_name: 'bot3',
       email: 'ro.bo3@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -92,7 +84,6 @@ exports.seed = async function (knex) {
       first_name: 'rob',
       last_name: 'bot4',
       email: 'ro.bot4@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
     {
@@ -100,8 +91,15 @@ exports.seed = async function (knex) {
       first_name: 'rob',
       last_name: 'bot5',
       email: 'ro.bot5@example.com',
-      user_password: 'pass',
       dob: new Date('2000-01-01'),
     },
-  ]);
+  ];
+  users = users.map((user) => {
+    const { salt, hash } = generatePassword('password');
+    user.salt = salt;
+    user.hash = hash;
+    return user;
+  });
+
+  await knex(Table.USER).insert(users);
 };

@@ -15,11 +15,7 @@ exports.up = async function (knex) {
     table.integer(Comment.PARENT_COMMENT_ID).unsigned();
   });
   await knex.schema.table(Table.COMMENT, (table) => {
-    table
-      .foreign(Comment.PARENT_COMMENT_ID)
-      .references(Comment.ID)
-      .inTable(Table.COMMENT)
-      .onDelete('CASCADE');
+    table.foreign(Comment.PARENT_COMMENT_ID).references(Comment.ID).inTable(Table.COMMENT).onDelete('CASCADE');
   });
 };
 
@@ -35,17 +31,9 @@ exports.down = async function (knex) {
     table.dropColumn(Comment.PARENT_COMMENT_ID);
   });
   await knex.schema.table(Table.COMMENT, (table) => {
-    table
-      .integer(Comment.PARENT_COMMENT_ID)
-      .unsigned()
-      .notNullable()
-      .defaultTo(0);
+    table.integer(Comment.PARENT_COMMENT_ID).unsigned().notNullable().defaultTo(0);
   });
   await knex.schema.table(Table.COMMENT, (table) => {
-    table
-      .foreign(Comment.PARENT_COMMENT_ID)
-      .references(Comment.ID)
-      .inTable(Table.COMMENT)
-      .onDelete('CASCADE');
+    table.foreign(Comment.PARENT_COMMENT_ID).references(Comment.ID).inTable(Table.COMMENT).onDelete('CASCADE');
   });
 };

@@ -13,7 +13,8 @@ module.exports.User = {
   FIRST_NAME: 'first_name',
   LAST_NAME: 'last_name',
   EMAIL: 'email',
-  PASSWORD: 'user_password',
+  SALT: 'salt',
+  HASH: 'hash',
   DOB: 'dob',
 };
 
@@ -66,10 +67,17 @@ module.exports.ReactionActivityKind = {
 };
 
 /* _____________________ Altered Columns _____________________ */
+/**
+ * These columns were dropped of their corresponding tables.
+ */
 module.exports.AlterPost = {
   REACTIONS_COUNTS: 'reactions_counts',
   COMMENTS_COUNT: 'comments_count',
   IS_ACTIVE: 'is_active',
+};
+
+module.exports.AlterUser = {
+  PASSWORD: 'user_password',
 };
 
 /* _____________________ Query Defaults _____________________ */

@@ -7,7 +7,7 @@ const createUserSchema = joi.object({
   last_name: joi.string().required(),
   dob: joi.string().required(),
   email: joi.string().email().required(),
-  user_password: joi.string().required(),
+  password: joi.string().required(),
 });
 
 const searchUsersSchema = joi.object({
