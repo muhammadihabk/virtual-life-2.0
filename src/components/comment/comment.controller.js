@@ -4,9 +4,9 @@ const { createCommentSchema, updateCommentSchema } = require('./comment.validati
 const { createCommentService, getCommentsService, updateCommentService, deleteCommentService } = require('./comment.service');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
-const app = express();
+const router = express.Router();
 
-app.post('/', async function createComment(req, res) {
+router.post('/', async function createComment(req, res) {
   try {
     const { value: commentDetails, error } = createCommentSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -21,7 +21,7 @@ app.post('/', async function createComment(req, res) {
   }
 });
 
-app.get('/:commentId', async function getComments(req, res) {
+router.get('/:commentId', async function getComments(req, res) {
   try {
     const commentId = req.params.commentId;
     const comments = await getCommentsService(commentId);
@@ -33,7 +33,7 @@ app.get('/:commentId', async function getComments(req, res) {
   }
 });
 
-app.patch('/:id', async function updateComment(req, res) {
+router.patch('/:id', async function updateComment(req, res) {
   try {
     const { value: commentDetails, error } = updateCommentSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -48,7 +48,7 @@ app.patch('/:id', async function updateComment(req, res) {
   }
 });
 
-app.delete('/:id', async function deleteComment(req, res) {
+router.delete('/:id', async function deleteComment(req, res) {
   try {
     const countAffectedRows = await deleteCommentService(req.params.id);
 
@@ -59,4 +59,4 @@ app.delete('/:id', async function deleteComment(req, res) {
   }
 });
 
-module.exports.CommentController = app;
+module.exports.CommentController = router;

@@ -4,9 +4,9 @@ const { addFriendService, searchFriendsService, removeFriendService } = require(
 const ValidateOptions = require('../../../config/validation/validation.config');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
-const app = express();
+const router = express.Router();
 
-app.post('/add', async function addFriend(req, res) {
+router.post('/add', async function addFriend(req, res) {
   try {
     const { value: addFriend, error } = addFriendSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -21,7 +21,7 @@ app.post('/add', async function addFriend(req, res) {
   }
 });
 
-app.post('/:userId/search', async function searchFriends(req, res) {
+router.post('/:userId/search', async function searchFriends(req, res) {
   try {
     const userId = req.params.userId;
     const { value: searchFriends, error } = searchFriendsSchema.validate(req.body, ValidateOptions);
@@ -37,7 +37,7 @@ app.post('/:userId/search', async function searchFriends(req, res) {
   }
 });
 
-app.delete('/:userId/:friendId', async function removeFriend(req, res) {
+router.delete('/:userId/:friendId', async function removeFriend(req, res) {
   let userId = req.params.userId < req.params.friendId ? req.params.userId : req.params.friendId;
   let friendId = req.params.userId > req.params.friendId ? req.params.userId : req.params.friendId;
   try {
@@ -50,4 +50,4 @@ app.delete('/:userId/:friendId', async function removeFriend(req, res) {
   }
 });
 
-module.exports.FriendController = app;
+module.exports.FriendController = router;

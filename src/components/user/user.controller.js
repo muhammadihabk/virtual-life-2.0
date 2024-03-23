@@ -4,9 +4,9 @@ const { createUserSchema, searchUsersSchema, updateUserSchema } = require('./use
 const ValidateOptions = require('../../../config/validation/validation.config');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
-const app = express();
+const router = express.Router();
 
-app.post('/', async function createUser(req, res) {
+router.post('/', async function createUser(req, res) {
   try {
     const { value: user, error } = createUserSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -21,7 +21,7 @@ app.post('/', async function createUser(req, res) {
   }
 });
 
-app.get('/:id', async function getUserById(req, res) {
+router.get('/:id', async function getUserById(req, res) {
   try {
     const user = await getUserByIdService(req.params.id);
 
@@ -32,7 +32,7 @@ app.get('/:id', async function getUserById(req, res) {
   }
 });
 
-app.post('/search', async function searchUsers(req, res) {
+router.post('/search', async function searchUsers(req, res) {
   try {
     const { value: searchOptions, error } = searchUsersSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -47,7 +47,7 @@ app.post('/search', async function searchUsers(req, res) {
   }
 });
 
-app.patch('/:id', async function updateUser(req, res) {
+router.patch('/:id', async function updateUser(req, res) {
   try {
     const { value: user, error } = updateUserSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -62,7 +62,7 @@ app.patch('/:id', async function updateUser(req, res) {
   }
 });
 
-app.delete('/:id', async function deleteUser(req, res) {
+router.delete('/:id', async function deleteUser(req, res) {
   try {
     const countDeletedRows = await deleteUserService(req.params.id);
 
@@ -73,4 +73,4 @@ app.delete('/:id', async function deleteUser(req, res) {
   }
 });
 
-module.exports.UserController = app;
+module.exports.UserController = router;

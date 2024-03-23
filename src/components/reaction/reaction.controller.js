@@ -5,9 +5,9 @@ const { ValidateOptions } = require('../../../config/validation/validation.confi
 const { ReactionActivityKind } = require('../../../config/db/db.enums');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
-const app = express();
+const router = express.Router();
 
-app.post('/', async function createReaction(req, res) {
+router.post('/', async function createReaction(req, res) {
   try {
     const { value: reactionDetails, error } = createReactionSchema.validate(req.body, ValidateOptions);
     if (error) {
@@ -22,7 +22,7 @@ app.post('/', async function createReaction(req, res) {
   }
 });
 
-app.get('/post/:id', async function getReactionsOfPost(req, res) {
+router.get('/post/:id', async function getReactionsOfPost(req, res) {
   try {
     const activityKind = ReactionActivityKind.POST;
     const reactions = await getReactionsOfActivityService(req.params.id, activityKind);
@@ -34,7 +34,7 @@ app.get('/post/:id', async function getReactionsOfPost(req, res) {
   }
 });
 
-app.get('/comment/:id', async function getReactionsOfComment(req, res) {
+router.get('/comment/:id', async function getReactionsOfComment(req, res) {
   try {
     const activityKind = ReactionActivityKind.COMMENT;
     const reactions = await getReactionsOfActivityService(req.params.id, activityKind);
@@ -46,7 +46,7 @@ app.get('/comment/:id', async function getReactionsOfComment(req, res) {
   }
 });
 
-app.delete('/post/:id', async function deleteReactionsOfPost(req, res) {
+router.delete('/post/:id', async function deleteReactionsOfPost(req, res) {
   try {
     const activityKind = ReactionActivityKind.POST;
     const countAffectedRows = await deleteReactionsOfActivityService(req.params.id, activityKind);
@@ -58,7 +58,7 @@ app.delete('/post/:id', async function deleteReactionsOfPost(req, res) {
   }
 });
 
-app.delete('/comment/:id', async function deleteReactionsOfComment(req, res) {
+router.delete('/comment/:id', async function deleteReactionsOfComment(req, res) {
   try {
     const activityKind = ReactionActivityKind.COMMENT;
     const countAffectedRows = await deleteReactionsOfActivityService(req.params.id, activityKind);
@@ -70,4 +70,4 @@ app.delete('/comment/:id', async function deleteReactionsOfComment(req, res) {
   }
 });
 
-module.exports.ReactionController = app;
+module.exports.ReactionController = router;
