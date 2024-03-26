@@ -16,6 +16,7 @@ app.use(passport.authenticate('jwt', { session: false }), function handlePasspor
 
     return res.sendStatus(500);
   }
+  next();
 });
 app.use(indexRouter);
 
