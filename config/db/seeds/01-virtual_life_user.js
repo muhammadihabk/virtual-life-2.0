@@ -1,4 +1,4 @@
-const { generatePassword } = require('../../../src/auth/password');
+const { generatePassword } = require('../../../src/auth/lib/password');
 const { Table } = require('../db.enums');
 
 /**

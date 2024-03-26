@@ -1,5 +1,5 @@
 const joi = require('joi');
-const { UserSearchAllowedSelect } = require('./user.enums');
+const { UserAllowedSelect } = require('./user.enums');
 const { SortOrder } = require('../../../config/db/db.enums');
 
 const createUserSchema = joi.object({
@@ -11,7 +11,7 @@ const createUserSchema = joi.object({
 });
 
 const searchUsersSchema = joi.object({
-  select: joi.array().items(joi.string().valid(...UserSearchAllowedSelect)),
+  select: joi.array().items(joi.string().valid(...UserAllowedSelect)),
   filter: joi.object({
     ids: joi.array().items(joi.number()),
     emails: joi.array().items(joi.string().email()),
@@ -22,7 +22,10 @@ const searchUsersSchema = joi.object({
   }),
   sort: joi.array().items(
     joi.object({
-      orderBy: joi.string().valid(...UserSearchAllowedSelect).required(),
+      orderBy: joi
+        .string()
+        .valid(...UserAllowedSelect)
+        .required(),
       sortOrder: joi.string().valid(...SortOrder),
     })
   ),

@@ -1,5 +1,5 @@
-const { generatePassword } = require('../../auth/password');
-const { searchUsersRepository, createUserRepository, getUserByIdRepository, getUsersSearchPaginateRepository, updateUserRepository, deleteUserRepository } = require('./user.repository');
+const { generatePassword } = require('../../../src/auth/lib/password');
+const { searchUsersRepository, createUserRepository, getUserByIdRepository, getUsersSearchPaginateRepository, updateUserRepository, deleteUserRepository, authGetUserByEmailRepository } = require('./user.repository');
 
 module.exports.createUserService = async function createUserService(createUserBody) {
   const { salt, hash } = generatePassword(createUserBody.password);
@@ -12,6 +12,10 @@ module.exports.createUserService = async function createUserService(createUserBo
 
 module.exports.getUserByIdService = function getUserByIdService(userId) {
   return getUserByIdRepository(userId);
+};
+
+module.exports.authGetUserByEmailService = function authGetUserByEmailService(userEmail) {
+  return authGetUserByEmailRepository(userEmail);
 };
 
 module.exports.searchUsersService = async function searchUsersService(searchOptions) {
