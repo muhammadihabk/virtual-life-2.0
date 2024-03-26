@@ -3,6 +3,7 @@ const { searchUsersService, createUserService, getUserByIdService, updateUserSer
 const { createUserSchema, searchUsersSchema, updateUserSchema } = require('./user.validation');
 const ValidateOptions = require('../../../config/validation/validation.config');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
+const { issueToken } = require('../../auth/lib/issueToken');
 
 const router = express.Router();
 
@@ -14,7 +15,9 @@ router.post('/', async function createUser(req, res) {
     }
     await createUserService(user);
 
-    res.sendStatus(201);
+    const token = issueToken(user);
+
+    res.status(201).json({ token });
   } catch (error) {
     console.log('[User Controller]');
     internalErrorHandler(res, error);
