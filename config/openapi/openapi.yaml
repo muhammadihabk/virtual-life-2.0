@@ -7,18 +7,21 @@ info:
 servers:
   - url: http://localhost:3000
 
+security:
+  - bearerAuth: []
+
 components:
   parameters:
     global-id:
       name: id
       schema:
-          type: string
+        type: string
       in: path
       required: true
     global-userId:
       name: userId
       schema:
-          type: string
+        type: string
       in: path
       required: true
     global-postId:
@@ -40,3 +43,8 @@ components:
       type: string
       enum: [asc, desc]
       required: [orderBy, sortOrder]
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

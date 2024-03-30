@@ -16,11 +16,11 @@ app.post('/login', async (req, res) => {
     }
     const user = await authGetUserByEmailService(userLoginData.email);
     if (!user) {
-      console.log(`[Auth]: User with email ${user.email} isn't found.`);
+      console.log('[Auth]: Email isn\'t found.');
       return res.sendStatus(404);
     }
     if (!isValidPassword(userLoginData.password, user.salt, user.hash)) {
-      console.log(`[Auth]: Invalid password for user`, user);
+      console.log(`[Auth]: Invalid credentials for user`, user);
       return res.sendStatus(401);
     }
 

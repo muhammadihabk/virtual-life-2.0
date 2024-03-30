@@ -14,13 +14,13 @@ const options = {
   algorithms: ['RS256'],
 };
 
-async function verifyFn(jwt_payload, done) {
+async function verifyFn(jwtPayload, done) {
   try {
-    const [user] = await knexClient.select(UserDefaultSelect.concat[User.ID]).from(Table.USER).where(User.EMAIL, jwt_payload.sub);
+    const [user] = await knexClient.select(UserDefaultSelect.concat[User.ID]).from(Table.USER).where(User.EMAIL, jwtPayload.sub);
 
     return user ? done(null, user) : done(null, false);
   } catch (error) {
-    console.log(`[Auth]: Failed to find user with email ${jwt_payload.sub}`, error);
+    console.log(`[Auth]: Failed to find user with email ${jwtPayload.sub}`, error);
 
     return done(new Error('Failed to verify token'), false);
   }

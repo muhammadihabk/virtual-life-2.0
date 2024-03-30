@@ -1,0 +1,34 @@
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Login
+      description: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+            example:
+              email: mo.ih@example.com
+              password: password
+        required: true
+      responses:
+        200:
+          description: Success
+        401:
+          description: Invalid credentials
+        404:
+          description: Email not found
+      security:
+        - []
+
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string

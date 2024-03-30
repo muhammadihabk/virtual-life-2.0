@@ -6,15 +6,19 @@ const mainSwaggerDocument = yaml.parse(mainOpenapiDoc);
 const paths = {};
 const components = {
   schemas: {},
-  parameters: mainSwaggerDocument.components.parameters,
-  'x-global-variables': mainSwaggerDocument.components['x-global-variables'],
+  ...mainSwaggerDocument.components,
 };
 
+// Add src/auth doc
+const authOpenapiDoc = fs.readFileSync('src/auth/auth.openapi.yaml', 'utf8');
+const authSwaggerDocument = yaml.parse(authOpenapiDoc);
+const { paths: authPaths } = authSwaggerDocument;
+const { schemas: authSchemas } = authSwaggerDocument.components;
+Object.assign(paths, authPaths);
+Object.assign(components.schemas, authSchemas);
+
 // Add src/user doc
-const userOpenapiDoc = fs.readFileSync(
-  'src/components/user/user.openapi.yaml',
-  'utf8'
-);
+const userOpenapiDoc = fs.readFileSync('src/components/user/user.openapi.yaml', 'utf8');
 const userSwaggerDocument = yaml.parse(userOpenapiDoc);
 const { paths: userPaths } = userSwaggerDocument;
 const { schemas: userSchemas, parameters: userParameters, ...userVariables } = userSwaggerDocument.components;
@@ -24,10 +28,7 @@ Object.assign(components.parameters, userParameters);
 Object.assign(components, userVariables);
 
 // Add src/friend doc
-const friendOpenapiDoc = fs.readFileSync(
-  'src/components/friend/friend.openapi.yaml',
-  'utf8'
-);
+const friendOpenapiDoc = fs.readFileSync('src/components/friend/friend.openapi.yaml', 'utf8');
 const friendSwaggerDocument = yaml.parse(friendOpenapiDoc);
 const { paths: friendPaths } = friendSwaggerDocument;
 const { schemas: friendSchemas, parameters: friendParameters, ...friendVariables } = friendSwaggerDocument.components;
@@ -37,10 +38,7 @@ Object.assign(components.parameters, friendParameters);
 Object.assign(components, friendVariables);
 
 // Add src/post doc
-const postOpenapiDoc = fs.readFileSync(
-  'src/components/post/post.openapi.yaml',
-  'utf8'
-);
+const postOpenapiDoc = fs.readFileSync('src/components/post/post.openapi.yaml', 'utf8');
 const postSwaggerDocument = yaml.parse(postOpenapiDoc);
 const { paths: postPaths } = postSwaggerDocument;
 const { schemas: postSchemas, parameters: postParameters, ...postVariables } = postSwaggerDocument.components;
@@ -50,10 +48,7 @@ Object.assign(components.parameters, postParameters);
 Object.assign(components, postVariables);
 
 // Add src/reaction doc
-const reactionOpenapiDoc = fs.readFileSync(
-  'src/components/reaction/reaction.openapi.yaml',
-  'utf8'
-);
+const reactionOpenapiDoc = fs.readFileSync('src/components/reaction/reaction.openapi.yaml', 'utf8');
 const reactionSwaggerDocument = yaml.parse(reactionOpenapiDoc);
 const { paths: reactionPaths } = reactionSwaggerDocument;
 const { schemas: reactionSchemas, parameters: reactionParameters, ...reactionVariables } = reactionSwaggerDocument.components;
@@ -63,10 +58,7 @@ Object.assign(components.parameters, reactionParameters);
 Object.assign(components, reactionVariables);
 
 // Add src/comment doc
-const commentOpenapiDoc = fs.readFileSync(
-  'src/components/comment/comment.openapi.yaml',
-  'utf8'
-);
+const commentOpenapiDoc = fs.readFileSync('src/components/comment/comment.openapi.yaml', 'utf8');
 const commentSwaggerDocument = yaml.parse(commentOpenapiDoc);
 const { paths: commentPaths } = commentSwaggerDocument;
 const { schemas: commentSchemas, parameters: commentParameters, ...commentVariables } = commentSwaggerDocument.components;
