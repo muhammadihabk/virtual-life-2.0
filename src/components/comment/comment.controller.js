@@ -12,8 +12,9 @@ router.post('/', async function createComment(req, res) {
     if (error) {
       throw error;
     }
+    const user = req.user;
+    await createCommentService(user, commentDetails);
 
-    await createCommentService(commentDetails);
     res.sendStatus(201);
   } catch (error) {
     console.log('[Comment Controller]');

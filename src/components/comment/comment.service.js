@@ -1,7 +1,7 @@
 const { createCommentRepository, getCommentsRepository, updateCommentRepository, deleteCommentRepository } = require('./comment.repository');
 
-module.exports.createCommentService = async function createCommentService(commentDetails) {
-  await createCommentRepository(commentDetails);
+module.exports.createCommentService = async function createCommentService(user, commentDetails) {
+  await createCommentRepository(user, commentDetails);
 };
 
 module.exports.getCommentsService = function getCommentsService(commentId) {

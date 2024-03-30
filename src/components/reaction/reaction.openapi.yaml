@@ -17,12 +17,13 @@ paths:
           description: Failed
         500:
           description: Failed
-  /reactions/post/{id}:
+  /reactions/{activityKind}/{id}:
     get:
       tags: [Reaction]
-      summary: Get a reaction of a post
+      summary: Get a reaction of an activity
       description: Get a reaction
       parameters:
+        - $ref: '#/components/parameters/activityKind'
         - $ref: '#/components/parameters/global-id'
       responses:
         200:
@@ -31,7 +32,7 @@ paths:
           description: Failed
     delete:
       tags: [Reaction]
-      summary: Delete a reaction of a post
+      summary: Delete a reaction of an activity
       description: Delete a reaction
       parameters:
         - $ref: '#/components/parameters/global-id'
@@ -39,32 +40,7 @@ paths:
         200:
           description: Success
         404:
-          description: Post not found
-        500:
-          description: Failed
-  /reactions/comment/{id}:
-    get:
-      tags: [Reaction]
-      summary: Get a reaction of a comment
-      description: Get a reaction
-      parameters:
-        - $ref: '#/components/parameters/global-id'
-      responses:
-        200:
-          description: Success
-        500:
-          description: Failed
-    delete:
-      tags: [Reaction]
-      summary: Delete a reaction of a comment
-      description: Delete a reaction
-      parameters:
-        - $ref: '#/components/parameters/global-id'
-      responses:
-        200:
-          description: Success
-        404:
-          description: Post not found
+          description: Not found
         500:
           description: Failed
 
@@ -89,3 +65,10 @@ components:
           type: string
         reaction_kind:
           type: string
+  parameters:
+    activityKind:
+      name: activityKind
+      schema:
+        type: string
+      in: path
+      required: true

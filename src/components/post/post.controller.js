@@ -12,8 +12,9 @@ router.post('/', async function createPost(req, res) {
     if (error) {
       throw error;
     }
+    const user = req.user;
+    await createPostService(user, postDetails);
 
-    await createPostService(postDetails);
     res.sendStatus(201);
   } catch (error) {
     console.log('[Post Controller]');

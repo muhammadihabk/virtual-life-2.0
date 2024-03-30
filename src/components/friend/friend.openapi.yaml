@@ -110,6 +110,6 @@ components:
     friendId:
       name: friendId
       schema:
-          type: string
+        type: string
       in: path
       required: true

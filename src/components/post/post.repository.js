@@ -10,12 +10,9 @@ const {
 const knexClient = require('../../../config/db/knex-client');
 const { PostDefaultSelect } = require('./post.enums');
 
-module.exports.createPostRepository = async function createPostRepository(
-  postDetails
-) {
+module.exports.createPostRepository = async function createPostRepository(user, postDetails) {
   try {
-    // TODO: Use the author id from the token when authentication is implemented
-    postDetails[Post.AUTHOR_ID] = 1;
+    postDetails[Post.AUTHOR_ID] = user.id;
 
     await knexClient.queryBuilder().insert(postDetails).into(Table.POST);
   } catch (error) {

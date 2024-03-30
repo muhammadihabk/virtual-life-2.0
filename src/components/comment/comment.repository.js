@@ -2,10 +2,9 @@ const knexClient = require('../../../config/db/knex-client');
 const { Table, Comment } = require('../../../config/db/db.enums');
 const { CommentDefaultSelect } = require('./comment.enums');
 
-module.exports.createCommentRepository = async function createCommentRepository(commentDetails) {
+module.exports.createCommentRepository = async function createCommentRepository(user, commentDetails) {
   try {
-    // TODO: Use the author id from the token when authentication is implemented
-    commentDetails[Comment.AUTHOR_ID] = 1;
+    commentDetails[Comment.AUTHOR_ID] = user.id;
 
     await knexClient.queryBuilder().insert(commentDetails).into(Table.COMMENT);
   } catch (error) {

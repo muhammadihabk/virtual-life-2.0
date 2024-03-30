@@ -2,7 +2,6 @@ const express = require('express');
 const { createReactionSchema } = require('./reaction.validation');
 const { createReactionService, getReactionsOfActivityService, deleteReactionsOfActivityService } = require('./reaction.service');
 const { ValidateOptions } = require('../../../config/validation/validation.config');
-const { ReactionActivityKind } = require('../../../config/db/db.enums');
 const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
 
 const router = express.Router();
@@ -13,8 +12,9 @@ router.post('/', async function createReaction(req, res) {
     if (error) {
       throw error;
     }
+    const user = req.user;
+    await createReactionService(user, reactionDetails);
 
-    await createReactionService(reactionDetails);
     res.sendStatus(201);
   } catch (error) {
     console.log('[Reaction Controller]');
@@ -22,10 +22,9 @@ router.post('/', async function createReaction(req, res) {
   }
 });
 
-router.get('/post/:id', async function getReactionsOfPost(req, res) {
+router.get('/:activityKind/:id', async function getReactionsOfActivity(req, res) {
   try {
-    const activityKind = ReactionActivityKind.POST;
-    const reactions = await getReactionsOfActivityService(req.params.id, activityKind);
+    const reactions = await getReactionsOfActivityService(req.params.id, req.params.activityKind);
 
     res.json(reactions);
   } catch (error) {
@@ -34,34 +33,9 @@ router.get('/post/:id', async function getReactionsOfPost(req, res) {
   }
 });
 
-router.get('/comment/:id', async function getReactionsOfComment(req, res) {
+router.delete('/:activityKind/:id', async function deleteReactionsOfActivity(req, res) {
   try {
-    const activityKind = ReactionActivityKind.COMMENT;
-    const reactions = await getReactionsOfActivityService(req.params.id, activityKind);
-
-    res.json(reactions);
-  } catch (error) {
-    console.log('[Reaction Controller]:', error);
-    res.sendStatus(500);
-  }
-});
-
-router.delete('/post/:id', async function deleteReactionsOfPost(req, res) {
-  try {
-    const activityKind = ReactionActivityKind.POST;
-    const countAffectedRows = await deleteReactionsOfActivityService(req.params.id, activityKind);
-
-    countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
-  } catch (error) {
-    console.log('[Reaction Controller]:', error);
-    res.sendStatus(500);
-  }
-});
-
-router.delete('/comment/:id', async function deleteReactionsOfComment(req, res) {
-  try {
-    const activityKind = ReactionActivityKind.COMMENT;
-    const countAffectedRows = await deleteReactionsOfActivityService(req.params.id, activityKind);
+    const countAffectedRows = await deleteReactionsOfActivityService(req.user, req.params.id, req.params.activityKind);
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
