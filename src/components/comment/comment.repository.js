@@ -2,9 +2,9 @@ const knexClient = require('../../../config/db/knex-client');
 const { Table, Comment } = require('../../../config/db/db.enums');
 const { CommentDefaultSelect } = require('./comment.enums');
 
-module.exports.createCommentRepository = async function createCommentRepository(user, commentDetails) {
+module.exports.createCommentRepository = async function createCommentRepository(userId, commentDetails) {
   try {
-    commentDetails[Comment.AUTHOR_ID] = user.id;
+    commentDetails[Comment.AUTHOR_ID] = userId;
 
     await knexClient.queryBuilder().insert(commentDetails).into(Table.COMMENT);
   } catch (error) {
@@ -13,7 +13,7 @@ module.exports.createCommentRepository = async function createCommentRepository(
   }
 };
 
-module.exports.getCommentsRepository = async function getCommentsRepository(inCommentId) {
+module.exports.getCommentsOfPostRepository = async function getCommentsOfPostRepository(inCommentId) {
   try {
     const commentId = isNaN(inCommentId) ? null : inCommentId;
     let commentsIds = knexClient
@@ -48,13 +48,13 @@ module.exports.getCommentsRepository = async function getCommentsRepository(inCo
   }
 };
 
-module.exports.updateCommentRepository = async function updateCommentRepository(id, commentDetails) {
+module.exports.updateCommentRepository = async function updateCommentRepository(commentId, commentDetails) {
   try {
     const countAffectedRows = await knexClient
       .queryBuilder()
       .update(commentDetails)
       .into(Table.COMMENT)
-      .where({ [Comment.ID]: id });
+      .where({ [Comment.ID]: commentId });
 
     return countAffectedRows;
   } catch (error) {
@@ -72,6 +72,23 @@ module.exports.deleteCommentRepository = async function deleteCommentRepository(
       .where({ [Comment.ID]: id });
 
     return countAffectedRows;
+  } catch (error) {
+    console.log('[Comment Repository]:', error);
+    throw error;
+  }
+};
+
+module.exports.getCommentByIdRepository = async function getCommentByIdRepository(commentId) {
+  try {
+    const [comment] = await knexClient
+      .queryBuilder()
+      .select(CommentDefaultSelect)
+      .from(Table.COMMENT)
+      .where({
+        [Comment.ID]: commentId,
+      });
+
+    return comment;
   } catch (error) {
     console.log('[Comment Repository]:', error);
     throw error;

@@ -3,8 +3,7 @@ const { SortOrder } = require('../../../config/db/db.enums');
 const { UserAllowedSelect } = require('../user/user.enums');
 
 module.exports.addFriendSchema = joi.object({
-  virtual_life_user_id: joi.number().required(),
-  friend_id: joi.number().required(),
+  friendId: joi.number().required(),
 });
 
 module.exports.searchFriendsSchema = joi.object({

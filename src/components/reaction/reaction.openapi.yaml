@@ -30,9 +30,10 @@ paths:
           description: Success
         500:
           description: Failed
+  /reactions/{id}:
     delete:
       tags: [Reaction]
-      summary: Delete a reaction of an activity
+      summary: Delete a reaction
       description: Delete a reaction
       parameters:
         - $ref: '#/components/parameters/global-id'
@@ -72,3 +73,4 @@ components:
         type: string
       in: path
       required: true
+      description: "Allowed values: post, comment"

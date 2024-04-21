@@ -4,7 +4,15 @@ const { UserDefaultSelect } = require('../user/user.enums');
 
 module.exports.addFriendRepository = async function addFriendRepository(addFriend) {
   try {
-    await knexClient.insert(addFriend).into(Table.FRIEND);
+    let queryBody = {};
+    queryBody[Friend.USER_ID] = addFriend.userId;
+    queryBody[Friend.FRIEND_ID] = addFriend.friendId;
+    if (addFriend.userId > addFriend.friendId) {
+      queryBody[Friend.USER_ID] = addFriend.friendId;
+      queryBody[Friend.FRIEND_ID] = addFriend.userId;
+    }
+
+    await knexClient.insert(queryBody).into(Table.FRIEND);
   } catch (error) {
     console.log('[Friend Repository]:', error);
     throw error;
@@ -99,6 +107,12 @@ function applyFriendFilter(query, userId, payload) {
 }
 
 module.exports.removeFriendRepository = async function removeFriendRepository(userId, friendId) {
+  if (userId > friendId) {
+    let temp = userId;
+    userId = friendId;
+    friendId = temp;
+  }
+
   try {
     return await knexClient
       .queryBuilder()

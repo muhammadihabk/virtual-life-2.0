@@ -9,14 +9,15 @@ paths:
             schema:
               $ref: '#/components/schemas/AddFriend'
             example:
-              virtual_life_user_id: 58
-              friend_id: 57
+              friendId: 57
         required: true
       responses:
         201:
           description: Success
         400:
           description: Failed
+        404:
+          description: User not found
         500:
           description: Failed
   /friends/{userId}/search:
@@ -53,6 +54,8 @@ paths:
       responses:
         200:
           description: Success
+        403:
+          description: Not allowed
         404:
           description: User not found
         500:
@@ -63,11 +66,9 @@ components:
     AddFriend:
       type: object
       properties:
-        virtual_life_user_id:
+        friendId:
           type: number
-        friend_id:
-          type: number
-      required: [virtual_life_user_id, friend_id]
+      required: [friendId]
     SearchFriends:
       type: object
       properties:

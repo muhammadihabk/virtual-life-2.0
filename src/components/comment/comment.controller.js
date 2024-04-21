@@ -1,8 +1,9 @@
 const express = require('express');
 const { ValidateOptions } = require('../../../config/validation/validation.config');
 const { createCommentSchema, updateCommentSchema } = require('./comment.validation');
-const { createCommentService, getCommentsService, updateCommentService, deleteCommentService } = require('./comment.service');
-const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
+const { createCommentService, getCommentsService, updateCommentService, deleteCommentService, getCommentByIdService } = require('./comment.service');
+const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
+const { Comment } = require('../../../config/db/db.enums');
 
 const router = express.Router();
 
@@ -12,13 +13,13 @@ router.post('/', async function createComment(req, res) {
     if (error) {
       throw error;
     }
-    const user = req.user;
-    await createCommentService(user, commentDetails);
+    const userId = req.user.id;
+    await createCommentService(userId, commentDetails);
 
     res.sendStatus(201);
   } catch (error) {
     console.log('[Comment Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -40,20 +41,35 @@ router.patch('/:id', async function updateComment(req, res) {
     if (error) {
       throw error;
     }
-    const countAffectedRows = await updateCommentService(req.params.id, commentDetails);
+    const COMMENT_ID = req.params.id;
+    const currentComment = await getCommentByIdService(COMMENT_ID);
+    if (req.user.id !== currentComment[Comment.AUTHOR_ID]) {
+      return res.sendStatus(403);
+    }
+
+    const countAffectedRows = await updateCommentService(COMMENT_ID, commentDetails);
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
     console.log('[Comment Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
 router.delete('/:id', async function deleteComment(req, res) {
   try {
-    const countAffectedRows = await deleteCommentService(req.params.id);
+    const COMMENT_ID = req.params.id;
+    const currentComment = await getCommentByIdService(COMMENT_ID);
+    if (!currentComment) {
+      return res.sendStatus(404);
+    }
+    if (req.user.id !== currentComment?.[Comment.AUTHOR_ID]) {
+      return res.sendStatus(403);
+    }
 
-    countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
+    await deleteCommentService(COMMENT_ID);
+
+    res.sendStatus(200);
   } catch (error) {
     console.log('[Comment Controller]:', error);
     res.sendStatus(500);

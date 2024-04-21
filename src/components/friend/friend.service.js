@@ -6,11 +6,6 @@ const {
 } = require('./friend.repository');
 
 module.exports.addFriendService = async function addFriendService(addFriend) {
-  if (addFriend.virtual_life_user_id > addFriend.friend_id) {
-    const temp = addFriend.virtual_life_user_id;
-    addFriend.virtual_life_user_id = addFriend.friend_id;
-    addFriend.friend_id = temp;
-  }
   await addFriendRepository(addFriend);
 };
 

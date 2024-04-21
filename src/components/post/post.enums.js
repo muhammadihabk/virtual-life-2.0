@@ -1,17 +1,10 @@
-const { Post } = require("../../../config/db/db.enums");
+const { Post } = require('../../../config/db/db.enums');
 
-module.exports.PostDefaultSelect = [
-  Post.AUTHOR_ID,
-  Post.POST_TEXT,
-  Post.POST_IMAGE,
-  Post.CREATED_AT,
-  Post.UPDATED_AT,
-];
+PostDefaultSelect = [Post.ID, Post.AUTHOR_ID, Post.POST_TEXT, Post.POST_IMAGE, Post.CREATED_AT, Post.UPDATED_AT];
 
-module.exports.PostSearchAllowedSelect = [
-  Post.AUTHOR_ID,
-  Post.POST_TEXT,
-  Post.POST_IMAGE,
-  Post.CREATED_AT,
-  Post.UPDATED_AT,
-];
+PostSearchAllowedSelect = PostDefaultSelect;
+
+module.exports = {
+  PostDefaultSelect,
+  PostSearchAllowedSelect,
+};

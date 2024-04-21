@@ -2,7 +2,7 @@ const express = require('express');
 const { issueToken } = require('../auth/lib/issueToken');
 const { authGetUserByEmailService } = require('../components/user/user.service');
 const { isValidPassword } = require('../auth/lib/password');
-const { internalErrorHandler } = require('../utilities/errorHandlers/internalErrorHandler');
+const { errorHandler } = require('../utilities/errorHandlers/errorHandler');
 const { userLoginSchema } = require('./auth.validation');
 const { ValidateOptions } = require('../../config/validation/validation.config');
 
@@ -16,7 +16,7 @@ app.post('/login', async (req, res) => {
     }
     const user = await authGetUserByEmailService(userLoginData.email);
     if (!user) {
-      console.log('[Auth]: Email isn\'t found.');
+      console.log("[Auth]: Email isn't found.");
       return res.sendStatus(404);
     }
     if (!isValidPassword(userLoginData.password, user.salt, user.hash)) {
@@ -29,7 +29,7 @@ app.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.log('[Auth]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 

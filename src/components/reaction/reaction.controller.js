@@ -1,8 +1,9 @@
 const express = require('express');
 const { createReactionSchema } = require('./reaction.validation');
-const { createReactionService, getReactionsOfActivityService, deleteReactionsOfActivityService } = require('./reaction.service');
+const { createReactionService, getReactionsOfActivityService, deleteReactionsOfActivityService, getReactionByIdService } = require('./reaction.service');
 const { ValidateOptions } = require('../../../config/validation/validation.config');
-const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
+const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
+const { Reaction } = require('../../../config/db/db.enums');
 
 const router = express.Router();
 
@@ -18,7 +19,7 @@ router.post('/', async function createReaction(req, res) {
     res.sendStatus(201);
   } catch (error) {
     console.log('[Reaction Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -33,11 +34,20 @@ router.get('/:activityKind/:id', async function getReactionsOfActivity(req, res)
   }
 });
 
-router.delete('/:activityKind/:id', async function deleteReactionsOfActivity(req, res) {
+router.delete('/:id', async function deleteReactionsOfActivity(req, res) {
   try {
-    const countAffectedRows = await deleteReactionsOfActivityService(req.user, req.params.id, req.params.activityKind);
+    const REACTION_ID = req.params.id;
+    const currentReaction = await getReactionByIdService(REACTION_ID);
+    if (!currentReaction) {
+      return res.sendStatus(404);
+    }
+    if (req.user.id !== currentReaction[Reaction.AUTHOR_ID]) {
+      return res.sendStatus(403);
+    }
 
-    countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
+    await deleteReactionsOfActivityService(req.user, REACTION_ID);
+
+    res.sendStatus(200);
   } catch (error) {
     console.log('[Reaction Controller]:', error);
     res.sendStatus(500);

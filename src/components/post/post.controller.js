@@ -2,7 +2,7 @@ const express = require('express');
 const { ValidateOptions } = require('../../../config/validation/validation.config');
 const { createPostSchema, searchPostsSchema, updatePostSchema } = require('./post.validation');
 const { createPostService, getPostByIdService, searchPostsService, getHomefeedService, updatePostService, deletePostService } = require('./post.service');
-const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
+const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.post('/', async function createPost(req, res) {
     res.sendStatus(201);
   } catch (error) {
     console.log('[Post Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -44,7 +44,7 @@ router.post('/search', async function searchPosts(req, res) {
     res.status(200).json(posts);
   } catch (error) {
     console.log('[Post Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -75,7 +75,7 @@ router.patch('/:id', async function updatePost(req, res) {
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
     console.log('[Post Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 

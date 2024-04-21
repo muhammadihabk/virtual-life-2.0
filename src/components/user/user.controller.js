@@ -2,7 +2,7 @@ const express = require('express');
 const { searchUsersService, createUserService, getUserByIdService, updateUserService, deleteUserService } = require('./user.service');
 const { createUserSchema, searchUsersSchema, updateUserSchema } = require('./user.validation');
 const ValidateOptions = require('../../../config/validation/validation.config');
-const { internalErrorHandler } = require('../../utilities/errorHandlers/internalErrorHandler');
+const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
 const { issueToken } = require('../../auth/lib/issueToken');
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.post('/', async function createUser(req, res) {
     res.status(201).json({ token });
   } catch (error) {
     console.log('[User Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -46,7 +46,7 @@ router.post('/search', async function searchUsers(req, res) {
     res.status(200).json(users);
   } catch (error) {
     console.log('[User Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
@@ -61,7 +61,7 @@ router.patch('/:id', async function updateUser(req, res) {
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
     console.log('[User Controller]');
-    internalErrorHandler(res, error);
+    errorHandler(res, error);
   }
 });
 
