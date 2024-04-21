@@ -42,8 +42,8 @@ router.patch('/:id', async function updateComment(req, res) {
       throw error;
     }
     const COMMENT_ID = req.params.id;
-    const currentComment = await getCommentByIdService(COMMENT_ID);
-    if (req.user.id !== currentComment[Comment.AUTHOR_ID]) {
+    const commentData = await getCommentByIdService(COMMENT_ID);
+    if (commentData && req.user.id !== commentData[Comment.AUTHOR_ID]) {
       return res.sendStatus(403);
     }
 
@@ -59,17 +59,14 @@ router.patch('/:id', async function updateComment(req, res) {
 router.delete('/:id', async function deleteComment(req, res) {
   try {
     const COMMENT_ID = req.params.id;
-    const currentComment = await getCommentByIdService(COMMENT_ID);
-    if (!currentComment) {
-      return res.sendStatus(404);
-    }
-    if (req.user.id !== currentComment?.[Comment.AUTHOR_ID]) {
+    const commentData = await getCommentByIdService(COMMENT_ID);
+    if (commentData && req.user.id !== commentData[Comment.AUTHOR_ID]) {
       return res.sendStatus(403);
     }
 
-    await deleteCommentService(COMMENT_ID);
+    const countAffectedRows = await deleteCommentService(COMMENT_ID);
 
-    res.sendStatus(200);
+    countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
     console.log('[Comment Controller]:', error);
     res.sendStatus(500);

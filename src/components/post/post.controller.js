@@ -3,6 +3,7 @@ const { ValidateOptions } = require('../../../config/validation/validation.confi
 const { createPostSchema, searchPostsSchema, updatePostSchema } = require('./post.validation');
 const { createPostService, getPostByIdService, searchPostsService, getHomefeedService, updatePostService, deletePostService } = require('./post.service');
 const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
+const { Post } = require('../../../config/db/db.enums');
 
 const router = express.Router();
 
@@ -70,7 +71,13 @@ router.patch('/:id', async function updatePost(req, res) {
     if (error) {
       throw error;
     }
-    const countAffectedRows = await updatePostService(req.params.id, updatePost);
+    const postId = req.params.id;
+    const postData = await getPostByIdService(postId);
+    if (postData && req.user.id !== postData[Post.AUTHOR_ID]) {
+      return res.sendStatus(403);
+    }
+
+    const countAffectedRows = await updatePostService(postId, updatePost);
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
@@ -81,7 +88,13 @@ router.patch('/:id', async function updatePost(req, res) {
 
 router.delete('/:id', async function deletePost(req, res) {
   try {
-    const countAffectedRows = await deletePostService(req.params.id);
+    const postId = req.params.id;
+    const postData = await getPostByIdService(postId);
+    if (postData && req.user.id !== postData[Post.AUTHOR_ID]) {
+      return res.sendStatus(403);
+    }
+
+    const countAffectedRows = await deletePostService(postId);
 
     countAffectedRows == 1 ? res.sendStatus(200) : res.sendStatus(404);
   } catch (error) {
