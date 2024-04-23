@@ -23,9 +23,9 @@ router.post('/', async function createReaction(req, res) {
   }
 });
 
-router.get('/:activityKind/:id', async function getReactionsOfActivity(req, res) {
+router.get('/:id', async function getReactionsOfActivity(req, res) {
   try {
-    const reactions = await getReactionsOfActivityService(req.params.id, req.params.activityKind);
+    const reactions = await getReactionsOfActivityService(req.params.id);
 
     res.json(reactions);
   } catch (error) {

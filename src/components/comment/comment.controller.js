@@ -23,10 +23,10 @@ router.post('/', async function createComment(req, res) {
   }
 });
 
-router.get('/:commentId', async function getComments(req, res) {
+router.get('/:parentCommentId', async function getComments(req, res) {
   try {
-    const commentId = req.params.commentId;
-    const comments = await getCommentsService(commentId);
+    const parentCommentId = req.params.parentCommentId;
+    const comments = await getCommentsService(parentCommentId);
 
     res.json(comments);
   } catch (error) {
@@ -59,6 +59,7 @@ router.patch('/:id', async function updateComment(req, res) {
 router.delete('/:id', async function deleteComment(req, res) {
   try {
     const COMMENT_ID = req.params.id;
+    console.log('\n\n########## com:\n', COMMENT_ID, '\n##########');
     const commentData = await getCommentByIdService(COMMENT_ID);
     if (commentData && req.user.id !== commentData[Comment.AUTHOR_ID]) {
       return res.sendStatus(403);

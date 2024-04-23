@@ -4,8 +4,8 @@ module.exports.createReactionService = async function createReactionService(user
   await createReactionRepository(user, reactionDetails);
 };
 
-module.exports.getReactionsOfActivityService = function getReactionsOfActivityService(activityId, activityKind) {
-  return getReactionsOfActivityRepository(activityId, activityKind);
+module.exports.getReactionsOfActivityService = function getReactionsOfActivityService(activityId) {
+  return getReactionsOfActivityRepository(activityId);
 };
 
 module.exports.deleteReactionsOfActivityService = function deleteReactionsOfActivityService(user, activityId) {

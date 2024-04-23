@@ -17,20 +17,18 @@ paths:
           description: Failed
         500:
           description: Failed
-  /reactions/{activityKind}/{id}:
+  /reactions/{id}:
     get:
       tags: [Reaction]
       summary: Get a reaction of an activity
       description: Get a reaction
       parameters:
-        - $ref: '#/components/parameters/activityKind'
         - $ref: '#/components/parameters/global-id'
       responses:
         200:
           description: Success
         500:
           description: Failed
-  /reactions/{id}:
     delete:
       tags: [Reaction]
       summary: Delete a reaction
@@ -66,11 +64,3 @@ components:
           type: string
         reaction_kind:
           type: string
-  parameters:
-    activityKind:
-      name: activityKind
-      schema:
-        type: string
-      in: path
-      required: true
-      description: "Allowed values: post, comment"

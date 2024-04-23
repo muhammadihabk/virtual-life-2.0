@@ -13,9 +13,9 @@ module.exports.createReactionRepository = async function createReactionRepositor
   }
 };
 
-module.exports.getReactionsOfActivityRepository = async function getReactionsOfActivityRepository(activityId, activityKind) {
+module.exports.getReactionsOfActivityRepository = async function getReactionsOfActivityRepository(activityId) {
   try {
-    const reactions = await knexClient.queryBuilder().select(GetReactionsOfActivitySelect).from(Table.REACTION).where(Reaction.ACTIVITY_ID, activityId).andWhere(Reaction.ACTIVITY_KIND, activityKind);
+    const reactions = await knexClient.queryBuilder().select(GetReactionsOfActivitySelect).from(Table.REACTION).where(Reaction.ACTIVITY_ID, activityId);
 
     return reactions;
   } catch (error) {

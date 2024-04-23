@@ -21,13 +21,13 @@ paths:
           description: Failed
         500:
           description: Failed
-  /comments/{id}:
+  /comments/{parentCommentId}:
     get:
       tags: [Comment]
-      summary: Get comments for a post
-      description: Get comments for a post
+      summary: Get comments for a post or replies for a comment
+      description: Get comments for a post or replies for a comment
       parameters:
-        - $ref: '#/components/parameters/global-id'
+        - $ref: '#/components/parameters/parentCommentId'
       responses:
         200:
           description: Success
@@ -37,12 +37,13 @@ paths:
                 $ref: '#/components/schemas/Comments'
         500:
           description: Failed
+  /comments/{commentId}:
     patch:
       tags: [Comment]
       summary: Update a coment
       description: Update a coment
       parameters:
-        - $ref: '#/components/parameters/global-id'
+        - $ref: '#/components/parameters/commentId'
       requestBody:
         content:
           application/json:
@@ -54,7 +55,7 @@ paths:
         400:
           description: Failed
         404:
-          description: Post not found
+          description: Comment not found
         500:
           description: Failed
     delete:
@@ -62,12 +63,12 @@ paths:
       summary: Delete a comment
       description: Delete a comment
       parameters:
-        - $ref: '#/components/parameters/global-id'
+        - $ref: '#/components/parameters/commentId'
       responses:
         200:
           description: Success
         404:
-          description: Post not found
+          description: Comment not found
         500:
           description: Failed
 
@@ -110,6 +111,11 @@ components:
   parameters:
     commentId:
       name: commentId
+      schema:
+        type: string
+      in: path
+    parentCommentId:
+      name: parentCommentId
       schema:
         type: string
       in: path
