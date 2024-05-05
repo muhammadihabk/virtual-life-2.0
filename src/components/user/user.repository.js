@@ -4,11 +4,7 @@ const { UserDefaultSelect } = require('./user.enums');
 
 module.exports.createUserRepository = async function createUserRepository(user) {
   try {
-    const { firstName, lastName, ...createUserData } = user;
-    createUserData[User.FIRST_NAME] = firstName;
-    createUserData[User.LAST_NAME] = lastName;
-
-    await knexClient.queryBuilder().insert(createUserData).into(Table.USER);
+    await knexClient.queryBuilder().insert(user).into(Table.USER);
   } catch (error) {
     console.log('[User Repository]');
     throw error;
