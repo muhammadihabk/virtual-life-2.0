@@ -1,7 +1,7 @@
 const joi = require('joi');
 
 module.exports.createReactionSchema = joi.object({
-  activity_id: joi.number().required(),
-  activity_kind: joi.string().required(),
-  reaction_kind: joi.string().required(),
+  activityId: joi.number().required(),
+  activityKind: joi.string().required(),
+  reactionKind: joi.string().required(),
 });

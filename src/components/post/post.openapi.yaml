@@ -10,8 +10,8 @@ paths:
             schema:
               $ref: '#/components/schemas/CreatePost'
             example:
-              post_text: 'My post'
-              post_image: 'img link'
+              postText: 'My post'
+              postImage: 'img link'
         required: true
       responses:
         201:
@@ -120,54 +120,54 @@ components:
     CreatePost:
       type: object
       properties:
-        post_text:
+        postText:
           type: string
-        post_image:
+        postImage:
           type: string
-      required: [post_text, post_image]
+      required: [postText, postImage]
     Post:
       type: object
       properties:
         post:
           type: object
           properties:
-            post_text:
+            postText:
               type: string
-            post_image:
+            postImage:
               type: string
-            created_at:
+            createdAt:
               type: string
-            updated_at:
+            updatedAt:
               type: string
         comments:
           type: array
           items:
             type: object
             properties:
-              author_id:
+              authorId:
                 type: number
-              comment_text:
+              commentText:
                 type: string
               count_replies:
                 type: number
-              created_at:
+              createdAt:
                 type: string
-              updated_at:
+              updatedAt:
                 type: string
     HomefeedOrSearchPost:
       type: object
       properties:
-        post_id:
+        postId:
           type: string
-        author_id:
+        authorId:
           type: string
-        post_text:
+        postText:
           type: string
-        post_image:
+        postImage:
           type: string
-        created_at:
+        createdAt:
           type: string
-        updated_at:
+        updatedAt:
           type: string
         count_comments:
           type: number
@@ -187,9 +187,9 @@ components:
         filter:
           type: object
           properties:
-            author_id:
+            authorId:
               type: string
-            post_text:
+            postText:
               type: string
         paginate:
           $ref: '#/components/x-global-variables/searchPaginate'
@@ -214,9 +214,9 @@ components:
     UpdatePost:
       type: object
       properties:
-        post_text:
+        postText:
           type: string
-        post_image:
+        postImage:
           type: string
   parameters:
     homefeed-limit:
@@ -232,4 +232,4 @@ components:
   x-post-variables:
     postColumns:
       type: string
-      enum: [author_id, post_text, post_image, created_at, updated_at]
+      enum: [authorId, postText, postImage, createdAt, updatedAt]

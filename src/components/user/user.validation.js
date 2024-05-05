@@ -3,8 +3,8 @@ const { UserAllowedSelect } = require('./user.enums');
 const { SortOrder } = require('../../../config/db/db.enums');
 
 const createUserSchema = joi.object({
-  first_name: joi.string().required(),
-  last_name: joi.string().required(),
+  firstName: joi.string().required(),
+  lastName: joi.string().required(),
   dob: joi.string().required(),
   email: joi.string().email().required(),
   password: joi.string().required(),
@@ -32,11 +32,11 @@ const searchUsersSchema = joi.object({
 });
 
 const updateUserSchema = joi.object({
-  first_name: joi.string(),
-  last_name: joi.string(),
+  firstName: joi.string(),
+  lastName: joi.string(),
   dob: joi.string(),
   email: joi.string().email(),
-  user_password: joi.string(),
+  userPassword: joi.string(),
 });
 
 module.exports = {

@@ -1,5 +1,5 @@
 module.exports.Table = {
-  USER: 'virtual_life_user',
+  USER: 'user',
   FRIEND: 'friend',
   POST: 'post',
   REACTION: 'reaction',
@@ -10,8 +10,8 @@ module.exports.Table = {
 
 module.exports.User = {
   ID: 'id',
-  FIRST_NAME: 'first_name',
-  LAST_NAME: 'last_name',
+  FIRST_NAME: 'firstName',
+  LAST_NAME: 'lastName',
   EMAIL: 'email',
   SALT: 'salt',
   HASH: 'hash',
@@ -19,36 +19,36 @@ module.exports.User = {
 };
 
 module.exports.Friend = {
-  USER_ID: 'virtual_life_user_id',
-  FRIEND_ID: 'friend_id',
-  CREATED_AT: 'created_at',
+  USER_ID: 'userId',
+  FRIEND_ID: 'friendId',
+  CREATED_AT: 'createdAt',
 };
 
 module.exports.Post = {
   ID: 'id',
-  AUTHOR_ID: 'author_id',
-  POST_TEXT: 'post_text',
-  POST_IMAGE: 'post_image',
-  CREATED_AT: 'created_at',
-  UPDATED_AT: 'updated_at',
+  AUTHOR_ID: 'authorId',
+  POST_TEXT: 'postText',
+  POST_IMAGE: 'postImage',
+  CREATED_AT: 'createdAt',
+  UPDATED_AT: 'updatedAt',
 };
 
 module.exports.Reaction = {
   ID: 'id',
-  AUTHOR_ID: 'author_id',
-  ACTIVITY_ID: 'activity_id',
-  REACTION_KIND: 'reaction_kind',
-  ACTIVITY_KIND: 'activity_kind',
+  AUTHOR_ID: 'authorId',
+  ACTIVITY_ID: 'activityId',
+  REACTION_KIND: 'reactionKind',
+  ACTIVITY_KIND: 'activityKind',
 };
 
 module.exports.Comment = {
   ID: 'id',
-  AUTHOR_ID: 'author_id',
-  POST_ID: 'post_id',
-  PARENT_COMMENT_ID: 'parent_comment_id',
-  COMMENT_TEXT: 'comment_text',
-  CREATED_AT: 'created_at',
-  UPDATED_AT: 'updated_at',
+  AUTHOR_ID: 'authorId',
+  POST_ID: 'postId',
+  PARENT_COMMENT_ID: 'parentCommentId',
+  COMMENT_TEXT: 'commentText',
+  CREATED_AT: 'createdAt',
+  UPDATED_AT: 'updatedAt',
 };
 
 /* _____________________ Columns _____________________ */
@@ -71,13 +71,13 @@ module.exports.ReactionActivityKind = {
  * These columns were dropped of their corresponding tables.
  */
 module.exports.AlterPost = {
-  REACTIONS_COUNTS: 'reactions_counts',
-  COMMENTS_COUNT: 'comments_count',
-  IS_ACTIVE: 'is_active',
+  REACTIONS_COUNTS: 'reactionsCounts',
+  COMMENTS_COUNT: 'commentsCount',
+  IS_ACTIVE: 'isActive',
 };
 
 module.exports.AlterUser = {
-  PASSWORD: 'user_password',
+  PASSWORD: 'userPassword',
 };
 
 /* _____________________ Query Defaults _____________________ */

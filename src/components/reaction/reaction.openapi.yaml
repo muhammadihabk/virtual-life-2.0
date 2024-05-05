@@ -48,19 +48,19 @@ components:
     CreateReaction:
       type: object
       properties:
-        activity_id:
+        activityId:
           type: string
-        activity_kind:
+        activityKind:
           type: string
           enum: ['post', 'comment']
-        reaction_kind:
+        reactionKind:
           type: string
           enum: ['like', 'love', 'sad', 'laugh', 'angry']
-      required: [activity_id, activity_kind, reaction_kind]
+      required: [activityId, activityKind, reactionKind]
     Reaction:
       type: object
       properties:
-        author_id:
+        authorId:
           type: string
-        reaction_kind:
+        reactionKind:
           type: string

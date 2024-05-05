@@ -10,9 +10,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateComment'
             example:
-              post_id: 1
-              parent_comment_id: 1
-              comment_text: 'My comment'
+              postId: 1
+              parentCommentId: 1
+              commentText: 'My comment'
         required: true
       responses:
         201:
@@ -77,25 +77,25 @@ components:
     CreateComment:
       type: object
       properties:
-        post_id:
+        postId:
           type: number
-        parent_comment_id:
+        parentCommentId:
           type: number
-        comment_text:
+        commentText:
           type: string
-      required: [post_id, parent_comment_id, comment_text]
+      required: [postId, parentCommentId, commentText]
     Comment:
       type: object
       properties:
         id:
           type: number
-        author_id:
+        authorId:
           type: number
-        comment_text:
+        commentText:
           type: string
-        created_at:
+        createdAt:
           type: string
-        updated_at:
+        updatedAt:
           type: string
         count_replies:
           type: number
@@ -106,7 +106,7 @@ components:
     UpdateComment:
       type: object
       properties:
-        comment_text:
+        commentText:
           type: string
   parameters:
     commentId:
