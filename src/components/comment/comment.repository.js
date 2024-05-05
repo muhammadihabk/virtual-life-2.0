@@ -8,7 +8,7 @@ module.exports.createCommentRepository = async function createCommentRepository(
 
     await knexClient.queryBuilder().insert(commentDetails).into(Table.COMMENT);
   } catch (error) {
-    console.log('[Comment Repository]:', error);
+    console.log('[Comment Repository]');
     throw error;
   }
 };
@@ -43,7 +43,7 @@ module.exports.getCommentsOfPostRepository = async function getCommentsOfPostRep
 
     return comments;
   } catch (error) {
-    console.log('[Comment Repository]:', error);
+    console.log('[Comment Repository]');
     throw error;
   }
 };
@@ -58,7 +58,7 @@ module.exports.updateCommentRepository = async function updateCommentRepository(
 
     return countAffectedRows;
   } catch (error) {
-    console.log('[Comment Repository]:', error);
+    console.log('[Comment Repository]');
     throw error;
   }
 };
@@ -73,7 +73,7 @@ module.exports.deleteCommentRepository = async function deleteCommentRepository(
 
     return countAffectedRows;
   } catch (error) {
-    console.log('[Comment Repository]:', error);
+    console.log('[Comment Repository]');
     throw error;
   }
 };
@@ -90,7 +90,7 @@ module.exports.getCommentByIdRepository = async function getCommentByIdRepositor
 
     return comment;
   } catch (error) {
-    console.log('[Comment Repository]:', error);
+    console.log('[Comment Repository]');
     throw error;
   }
 };

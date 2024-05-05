@@ -1,19 +1,19 @@
 const express = require('express');
-const { searchUsersService, createUserService, getUserByIdService, updateUserService, deleteUserService } = require('./user.service');
-const { createUserSchema, searchUsersSchema, updateUserSchema } = require('./user.validation');
+const { searchUsersService, registerUserService, getUserByIdService, updateUserService, deleteUserService } = require('./user.service');
+const { registerUserSchema, searchUsersSchema, updateUserSchema } = require('./user.validation');
 const ValidateOptions = require('../../../config/validation/validation.config');
 const { errorHandler } = require('../../utilities/errorHandlers/errorHandler');
 const { issueToken } = require('../../auth/lib/issueToken');
 
 const router = express.Router();
 
-router.post('/', async function createUser(req, res) {
+module.exports.registerUser = async function registerUser(req, res) {
   try {
-    const { value: user, error } = createUserSchema.validate(req.body, ValidateOptions);
+    const { value: user, error } = registerUserSchema.validate(req.body, ValidateOptions);
     if (error) {
       throw error;
     }
-    await createUserService(user);
+    await registerUserService(user);
 
     const token = issueToken(user);
 
@@ -22,7 +22,7 @@ router.post('/', async function createUser(req, res) {
     console.log('[User Controller]');
     errorHandler(res, error);
   }
-});
+};
 
 router.get('/:id', async function getUserById(req, res) {
   try {

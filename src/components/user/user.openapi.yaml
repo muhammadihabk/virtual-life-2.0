@@ -4,6 +4,8 @@ paths:
       tags: [User]
       summary: Create a new user
       description: Create a new user
+      security:
+        - []
       requestBody:
         content:
           application/json:

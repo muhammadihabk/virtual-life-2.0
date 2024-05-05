@@ -14,7 +14,7 @@ module.exports.addFriendRepository = async function addFriendRepository(addFrien
 
     await knexClient.insert(queryBody).into(Table.FRIEND);
   } catch (error) {
-    console.log('[Friend Repository]:', error);
+    console.log('[Friend Repository]');
     throw error;
   }
 };
@@ -54,7 +54,7 @@ module.exports.searchFriendsRepository = async function searchFriendsRepository(
 
     return friends;
   } catch (error) {
-    console.log('[Friend Repository]:', error);
+    console.log('[Friend Repository]');
     throw error;
   }
 };
@@ -86,7 +86,7 @@ module.exports.getFriendsSearchPaginateRepository = async function getFriendsSea
       offset,
     };
   } catch (error) {
-    console.log('[Friend Repository]:', error);
+    console.log('[Friend Repository]');
     throw error;
   }
 };
@@ -123,7 +123,7 @@ module.exports.removeFriendRepository = async function removeFriendRepository(us
         [Friend.FRIEND_ID]: friendId,
       });
   } catch (error) {
-    console.log('[Friend Repository]:', error);
+    console.log('[Friend Repository]');
     throw error;
   }
 };

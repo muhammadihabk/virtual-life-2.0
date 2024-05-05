@@ -4,6 +4,8 @@ paths:
       tags: [Auth]
       summary: Login
       description: Login
+      security:
+        - []
       requestBody:
         content:
           application/json:
@@ -20,8 +22,6 @@ paths:
           description: Invalid credentials
         404:
           description: Email not found
-      security:
-        - []
 
 components:
   schemas:

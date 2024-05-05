@@ -4,9 +4,13 @@ const { UserDefaultSelect } = require('./user.enums');
 
 module.exports.createUserRepository = async function createUserRepository(user) {
   try {
-    await knexClient.queryBuilder().insert(user).into(Table.USER);
+    const { firstName, lastName, ...createUserData } = user;
+    createUserData[User.FIRST_NAME] = firstName;
+    createUserData[User.LAST_NAME] = lastName;
+
+    await knexClient.queryBuilder().insert(createUserData).into(Table.USER);
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };
@@ -23,7 +27,7 @@ module.exports.getUserByIdRepository = async function getUserByIdRepository(user
 
     return user;
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };
@@ -40,7 +44,7 @@ module.exports.authGetUserByEmailRepository = async function authGetUserByEmailR
 
     return user;
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };
@@ -67,7 +71,7 @@ module.exports.searchUsersRepository = async function searchUsersRepository(sear
   return query
     .then((rows) => rows)
     .catch((error) => {
-      console.log('[User Repository]:', error);
+      console.log('[User Repository]');
       throw error;
     });
 };
@@ -89,7 +93,7 @@ module.exports.getUsersSearchPaginateRepository = async function getUsersSearchP
       offset,
     };
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };
@@ -118,7 +122,7 @@ module.exports.updateUserRepository = async function updateUserRepository(userId
 
     return countAffectedRows;
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };
@@ -133,7 +137,7 @@ module.exports.deleteUserRepository = async function deleteUserRepository(userId
 
     return countDeletedRows;
   } catch (error) {
-    console.log('[User Repository]:', error);
+    console.log('[User Repository]');
     throw error;
   }
 };

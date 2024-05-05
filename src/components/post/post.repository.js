@@ -8,7 +8,7 @@ module.exports.createPostRepository = async function createPostRepository(user, 
 
     await knexClient.queryBuilder().insert(postDetails).into(Table.POST);
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };
@@ -61,7 +61,7 @@ module.exports.getPostByIdRepository = async function getPostByIdRepository(post
 
     return { post, comments };
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };
@@ -99,7 +99,7 @@ module.exports.searchPostsRepository = async function searchPostsRepository(sear
 
     return posts;
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };
@@ -130,16 +130,16 @@ module.exports.searchPostsPaginateRepository = async function searchPostsPaginat
   try {
     const [{ count }] = await query.count(`${Post.ID} AS count`);
 
-    return {
-      count,
-      limit,
-      offset,
-    };
-  } catch (error) {
-    console.log('[Post Repository]:', error);
-    throw error;
-  }
-};
+      return {
+        count,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      console.log('[Post Repository]');
+      throw error;
+    }
+  };
 
 module.exports.getHomefeedRepository = async function getHomefeedRepository(userId, paginateOptions) {
   const limit = paginateOptions.limit || SearchDefaultLimit;
@@ -199,7 +199,7 @@ module.exports.getHomefeedRepository = async function getHomefeedRepository(user
 
     return posts;
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };
@@ -220,27 +220,27 @@ module.exports.getHomefeedPaginateRepository = async function getHomefeedPaginat
     .where(`${Table.FRIEND}.${Friend.USER_ID}`, userId);
   const friends = await knexClient.queryBuilder().select([Friend.FRIEND_ID]).from(allFriendsSubQuery).where(`${Table.FRIEND}.${Friend.USER_ID}`, userId);
 
-  let query = knexClient
-    .queryBuilder()
-    .from(Table.POST)
-    .whereIn(
-      `${Table.POST}.${Post.AUTHOR_ID}`,
-      friends.map((friend) => friend.friendId)
-    );
+    let query = knexClient
+      .queryBuilder()
+      .from(Table.POST)
+      .whereIn(
+        `${Table.POST}.${Post.AUTHOR_ID}`,
+        friends.map((friend) => friend.friend_id)
+      );
 
-  try {
-    const [{ count }] = await query.count(`${Post.ID} AS count`);
+    try {
+      const [{ count }] = await query.count(`${Post.ID} AS count`);
 
-    return {
-      count,
-      limit,
-      offset,
-    };
-  } catch (error) {
-    console.log('[Post Repository]:', error);
-    throw error;
-  }
-};
+      return {
+        count,
+        limit,
+        offset,
+      };
+    } catch (error) {
+      console.log('[Post Repository]');
+      throw error;
+    }
+  };
 
 module.exports.updatePostRepository = async function updatePostRepository(postId, postDetails) {
   try {
@@ -252,7 +252,7 @@ module.exports.updatePostRepository = async function updatePostRepository(postId
 
     return countAffectedRows;
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };
@@ -267,7 +267,7 @@ module.exports.deletePostRepository = async function deletePostRepository(id) {
 
     return countDeletedRows;
   } catch (error) {
-    console.log('[Post Repository]:', error);
+    console.log('[Post Repository]');
     throw error;
   }
 };

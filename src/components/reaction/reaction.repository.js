@@ -8,7 +8,7 @@ module.exports.createReactionRepository = async function createReactionRepositor
 
     await knexClient.queryBuilder().from(Table.REACTION).insert(reactionDetails);
   } catch (error) {
-    console.log('[Reaction Repository]:', error);
+    console.log('[Reaction Repository]');
     throw error;
   }
 };
@@ -19,7 +19,7 @@ module.exports.getReactionsOfActivityRepository = async function getReactionsOfA
 
     return reactions;
   } catch (error) {
-    console.log('[Reaction Repository]:', error);
+    console.log('[Reaction Repository]');
     throw error;
   }
 };
@@ -30,7 +30,7 @@ module.exports.deleteReactionsOfActivityRepository = async function deleteReacti
 
     return countDeletedRows;
   } catch (error) {
-    console.log('[Reaction Repository]:', error);
+    console.log('[Reaction Repository]');
     throw error;
   }
 };
@@ -47,7 +47,7 @@ module.exports.getReactionByIdRepository = async function getReactionByIdReposit
 
     return reaction;
   } catch (error) {
-    console.log('[Reaction Repository]:', error);
+    console.log('[Reaction Repository]');
     throw error;
   }
 };
