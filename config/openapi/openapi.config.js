@@ -70,4 +70,10 @@ Object.assign(components, commentVariables);
 mainSwaggerDocument.paths = paths;
 mainSwaggerDocument.components = components;
 
+if (process.env.NODE_ENV === 'production') {
+  mainSwaggerDocument.servers = [{ url: process.env.API_BASEURL }];
+} else {
+  mainSwaggerDocument.servers = [{ url: 'http://localhost:3000' }];
+}
+
 module.exports = mainSwaggerDocument;

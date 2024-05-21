@@ -1,6 +1,5 @@
 const crypto = require('crypto');
 const fs = require('fs');
-const path = require('path');
 
 const keyPair = crypto.generateKeyPairSync('rsa', {
   modulusLength: 4096,
@@ -14,5 +13,5 @@ const keyPair = crypto.generateKeyPairSync('rsa', {
   },
 });
 
-fs.writeFileSync(path.join(__dirname, 'private.pem'), keyPair.privateKey);
-fs.writeFileSync(path.join(__dirname, 'public.pem'), keyPair.publicKey);
+fs.writeFileSync('private.pem', keyPair.privateKey);
+fs.writeFileSync('public.pem', keyPair.publicKey);

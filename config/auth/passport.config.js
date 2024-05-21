@@ -1,12 +1,10 @@
-const fs = require('fs');
-const path = require('path');
 const passport = require('passport');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
 const knexClient = require('../db/knex-client');
 const { UserDefaultSelect } = require('../../src/components/user/user.enums');
 const { Table, User } = require('../db/db.enums');
 
-const publicKey = fs.readFileSync(path.join(__dirname, '../../src/auth/lib/public.pem'), 'utf8');
+const publicKey = process.env.PUBLIC_KEY;
 
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),

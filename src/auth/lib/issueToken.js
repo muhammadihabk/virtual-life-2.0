@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
 
-const privateKey = fs.readFileSync(path.join(__dirname, 'private.pem'), 'utf8');
+const privateKey = process.env.PRIVATE_KEY;
 
 module.exports.issueToken = (user) => {
   const payload = {

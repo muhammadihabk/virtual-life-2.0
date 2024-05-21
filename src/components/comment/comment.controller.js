@@ -59,7 +59,6 @@ router.patch('/:id', async function updateComment(req, res) {
 router.delete('/:id', async function deleteComment(req, res) {
   try {
     const COMMENT_ID = req.params.id;
-    console.log('\n\n########## com:\n', COMMENT_ID, '\n##########');
     const commentData = await getCommentByIdService(COMMENT_ID);
     if (commentData && req.user.id !== commentData[Comment.AUTHOR_ID]) {
       return res.sendStatus(403);
