@@ -1,7 +1,7 @@
 # Virtual Life 2.0
 
 - Check the [NestJS git branch](https://github.com/muhammadihabk/virtual-life-2.0/tree/nestjs-version)
-- [Live](http://18.208.246.233:3000/api-docs/) on AWS!
+- Was hosted on AWS EC2.
 - Improving on my prev [virtual-life-1.0](https://github.com/muhammadihabk/virtual-life-1.0), this social network backend api aims at improving in all aspects even the cleaner more quality code. Check [Phases](#phases) 👇.
 - Designed with frontend phase in mind, giving convenient endpoints for features like homefeed, add comments and replies and see their authors and reactions count, ...
 
